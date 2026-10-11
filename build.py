@@ -129,7 +129,8 @@ def teleboy_genres(cfg, key):
         "x-teleboy-apikey": key, "Origin": "https://www.teleboy.ch", "Referer": "https://www.teleboy.ch/"})
     if r.status_code != 200 or not r.text.lstrip().startswith("{"):
         raise SystemExit(f"Teleboy API: risposta non valida HTTP {r.status_code} "
-                         f"server={r.headers.get('server')} body={r.text[:300]!r}")
+                         f"server={r.headers.get('server')} cf-ray={r.headers.get('cf-ray')} "
+                         f"testo={re.sub(r'\\s+', ' ', BeautifulSoup(r.text, 'html.parser').get_text(' '))[:600]!r}")
     names = {}
     for g in r.json()["data"]["items"]:
         names[g["id"]] = g.get("name_it") or g["name"]
