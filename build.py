@@ -78,6 +78,8 @@ def teleboy_key(cfg):
     try:
         r = S.get(cfg["teleboy"]["page_for_key"], timeout=30)
         m = re.search(r"tvapiKey:\s*'([0-9a-f]{20,})'", r.text)
+        if not m:
+            log(f"! chiave non trovata nella pagina (HTTP {r.status_code}, {len(r.text)} byte)")
         if m:
             kf.write_text(m.group(1))
             return m.group(1)

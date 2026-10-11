@@ -30,6 +30,9 @@ jobs:
       - name: Genera la pagina
         env:
           TZ: Europe/Zurich
+          # facoltativo: se teleboy.ch blocca la lettura della pagina dal server di GitHub,
+          # la chiave pubblica del frontend può essere salvata come secret del repository
+          TELEBOY_API_KEY: ${{ secrets.TELEBOY_API_KEY }}
         run: python build.py
 
       - name: Salva il risultato (docs/ + cache traduzioni)
