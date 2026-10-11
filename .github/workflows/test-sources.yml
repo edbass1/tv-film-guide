@@ -1,0 +1,60 @@
+name: Test fonti dati
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: epgshare01 (XMLTV)
+        run: |
+          UA="Mozilla/5.0 (X11; Linux x86_64) tv-film-guide-test"
+          curl -sS -A "$UA" -o /dev/null -w "INDEX epgshare01/ HTTP %{http_code} size %{size_download} time %{time_total}s\n" https://epgshare01.online/epgshare01/ || true
+          for c in DE1 AT1 CH1 FR1 IT1 UK1 ES1; do
+            curl -sS -L -A "$UA" -o $c.xml.gz -w "EPG $c HTTP %{http_code} size %{size_download} time %{time_total}s\n" "https://epgshare01.online/epgshare01/epg_ripper_$c.xml.gz" || echo "EPG $c curl error"
+            if gzip -t $c.xml.gz 2>/dev/null; then
+              n=$(zcat $c.xml.gz | grep -c "<programme ")
+              first=$(zcat $c.xml.gz | grep -o 'start="[0-9]\{8\}' | sort | head -1)
+              last=$(zcat $c.xml.gz | grep -o 'start="[0-9]\{8\}' | sort | tail -1)
+              echo "   $c valid gzip, programmes=$n, first=$first last=$last"
+            else
+              echo "   $c NOT a valid gzip; first bytes:"; head -c 300 $c.xml.gz; echo
+            fi
+          done
+      - name: IMDb datasets (senza chiave)
+        run: |
+          for f in title.ratings.tsv.gz title.basics.tsv.gz; do
+            curl -sS -I "https://datasets.imdbws.com/$f" | grep -iE "^(HTTP|content-length|last-modified|content-type)" | sed "s/^/IMDb $f HEAD: /"
+            curl -sS -r 0-65535 -o part.gz -w "IMDb $f RANGE HTTP %{http_code} bytes %{size_download}\n" "https://datasets.imdbws.com/$f"
+            (zcat part.gz 2>/dev/null || true) | head -3 | sed "s/^/   /"
+          done
+          curl -sS -o ratings.tsv.gz -w "IMDb title.ratings.tsv.gz FULL HTTP %{http_code} size %{size_download} time %{time_total}s\n" https://datasets.imdbws.com/title.ratings.tsv.gz
+          echo "   righe: $(zcat ratings.tsv.gz | wc -l)"
+      - name: Wikidata SPARQL
+        run: |
+          curl -sS -G https://query.wikidata.org/sparql \
+            -H "Accept: application/sparql-results+json" -H "User-Agent: tv-film-guide/1.0 (GitHub Actions test)" \
+            --data-urlencode 'query=SELECT ?imdb ?it WHERE { VALUES ?imdb {"tt0372183" "tt0053125"} ?item wdt:P345 ?imdb. OPTIONAL{?item rdfs:label ?it FILTER(lang(?it)="it")} }' \
+            -o wd.json -w "WIKIDATA HTTP %{http_code} size %{size_download} time %{time_total}s\n"
+          head -c 600 wd.json; echo
+          curl -sS -G "https://www.wikidata.org/w/api.php" -A "tv-film-guide/1.0 (GitHub Actions test)" \
+            --data-urlencode "action=wbsearchentities" --data-urlencode "search=El pianista" --data-urlencode "language=es" --data-urlencode "format=json" \
+            -o /dev/null -w "WIKIDATA wbsearchentities HTTP %{http_code} size %{size_download}\n"
+      - name: La Vanguardia
+        run: |
+          curl -sS -L -A "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/124 Safari/537.36" \
+            -o lv.html -w "LAVANGUARDIA HTTP %{http_code} size %{size_download} time %{time_total}s\n" \
+            https://www.lavanguardia.com/television/programacion-tv/peliculas
+          echo "   eventi li.event: $(grep -o 'class="event event' lv.html | wc -l)"
+      - name: MyMemory (controllo)
+        run: |
+          curl -sS -G https://api.mymemory.translated.net/get --data-urlencode "q=Die Freiheitsstatue" --data-urlencode "langpair=de|it" \
+            -o mm.json -w "MYMEMORY HTTP %{http_code} size %{size_download}\n"; head -c 200 mm.json; echo
+      - name: Teleboy (controllo, atteso 403)
+        run: |
+          curl -sS -o /dev/null -w "TELEBOY api HTTP %{http_code}\n" "https://api.teleboy.ch/epg/genres" || true
