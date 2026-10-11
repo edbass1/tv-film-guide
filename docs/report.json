@@ -1,5 +1,5 @@
 {
- "generato": "2026-10-11T12:19+02:00",
+ "generato": "2026-10-11T12:25+02:00",
  "conteggi_per_giorno (dopo unione repliche)": [
   {
    "giorno": "2026-10-11",
@@ -82,13 +82,13 @@
   "spagna_doppio_audio": "43/202",
   "doc_doppio_audio_sì": "373/1978",
   "doc_doppio_audio_teleboy_flag": "11/1978",
-  "film_non_it_con_titolo_it": "418/860",
-  "doc_non_it_con_titolo_it": "653/1623",
-  "doc_trad_automatica": "595/1978",
+  "film_non_it_con_titolo_it": "427/860",
+  "doc_non_it_con_titolo_it": "735/1623",
+  "doc_trad_automatica": "677/1978",
   "spagna_con_titolo_it": "83/202",
   "spagna_con_imdb": "6/202"
  },
  "wikidata_ricerche_nuove": 0,
- "mymemory_caratteri": 1200,
+ "mymemory_caratteri": 1198,
  "mymemory_quota": false
 }

@@ -71,12 +71,14 @@ def save_json(p, data):
 
 # ---------------------------------------------------------------- Teleboy
 def teleboy_key(cfg):
-    key = os.environ.get("TELEBOY_API_KEY")
+    key = (os.environ.get("TELEBOY_API_KEY") or "").strip()
     if key:
+        log("  chiave Teleboy da variabile d'ambiente")
         return key
     kf = CACHE / "teleboy_key.txt"
     try:
         r = S.get(cfg["teleboy"]["page_for_key"], timeout=30)
+        log(f"  pagina Teleboy: HTTP {r.status_code}, {len(r.text)} byte")
         m = re.search(r"tvapiKey:\s*'([0-9a-f]{20,})'", r.text)
         if not m:
             log(f"! chiave non trovata nella pagina (HTTP {r.status_code}, {len(r.text)} byte)")
@@ -123,7 +125,11 @@ def teleboy_fetch(cfg, key, genre, start, end):
 
 
 def teleboy_genres(cfg, key):
-    r = S.get(cfg["teleboy"]["api_base"] + "/epg/genres", headers={"x-teleboy-apikey": key}, timeout=30)
+    r = S.get(cfg["teleboy"]["api_base"] + "/epg/genres", timeout=30, headers={
+        "x-teleboy-apikey": key, "Origin": "https://www.teleboy.ch", "Referer": "https://www.teleboy.ch/"})
+    if r.status_code != 200 or not r.text.lstrip().startswith("{"):
+        raise SystemExit(f"Teleboy API: risposta non valida HTTP {r.status_code} "
+                         f"server={r.headers.get('server')} body={r.text[:300]!r}")
     names = {}
     for g in r.json()["data"]["items"]:
         names[g["id"]] = g.get("name_it") or g["name"]
