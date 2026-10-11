@@ -628,7 +628,7 @@ def main():
                 else ("News" if c == "News & Documentary" else c) for c in cats]
         p["cats_all"] = cats
         ctxt = " | ".join(cats)
-        p["c_film"] = bool(RX_FILM_CAT.search(ctxt)) or p["src"] == "lv"
+        p["c_film"] = any(RX_FILM_CAT.search(c) for c in cats) or p["src"] == "lv"
         p["c_doc"] = bool(RX_DOC_CAT.search(ctxt)) and not re.search(r"dokumentarfilm", ctxt, re.I) or \
             bool(re.search(r"dokumentarfilm|film documentaire|documentaire", ctxt, re.I))
         if re.search(r"dokumentarfilm|documental", ctxt, re.I):
@@ -640,6 +640,8 @@ def main():
         p["c_kids"] = bool(rx_kid_cat and rx_kid_cat.search(ctxt)) or bool(rx_kid_title and rx_kid_title.search(p["title"])) \
             or p["ch"].lower() in kid_ch or "infantil" in p.get("es_tags", [])
         p["c_erotic"] = bool(RX_EROTIC.search(ctxt)) and bool(re.search(r"erotik|sex|adult|érot|erotic", ctxt, re.I))
+        # alcune guide (es. DE1 per i canali BBC) mettono "Film: " davanti al titolo
+        p["title"] = re.sub(r"^(Film|Spielfilm|Movie)\s*:\s*", "", p["title"]).strip() or p["title"]
         p["keys"] = title_keys(p["title"])
         m = re.search(r"\((19\d\d|20[0-3]\d)\)\s*$", p["title"])
         if m:
@@ -670,13 +672,19 @@ def main():
     med = lower_set(cfg["mediaset"]["channels"]) - lower_set(cfg["mediaset"]["keep_docs_on"])
     kid_combo = set(kids.get("imdb_genre_combo") or [])
     kept = []
+    dropped = []
+
+    def drop(p, why):
+        stats["programmi"][why] += 1
+        if os.environ.get("TVDEBUG"):
+            dropped.append({"why": why, "ch": p["ch"], "b": p["begin"].isoformat(), "t": p["title"], "cats": p["cats_all"]})
     for p in items:
         st = stats["programmi"]
         st["totale"] += 1
         if p["c_kids"]:
-            st["bambini"] += 1; continue
+            drop(p, "bambini"); continue
         if p["c_erotic"]:
-            st["erotici"] += 1; continue
+            drop(p, "erotici"); continue
         kind, tid = None, None
         if p["c_doc"]:
             kind = "doc"
@@ -696,37 +704,37 @@ def main():
             if tid:
                 kind = "doc" if "Documentary" in imdb.info[tid][4] else "film"
         if not kind:
-            st["non film/doc"] += 1; continue
+            drop(p, "non film/doc"); continue
         if kind == "doc" and rx_d_desc and len({m.group(0).lower() for m in rx_d_desc.finditer(p.get("desc") or "")}) >= 2:
-            st["doc natura/lifestyle (descrizione)"] += 1; continue
+            drop(p, "doc natura/lifestyle (descrizione)"); continue
         genres = imdb.info[tid][4] if tid else []
         text = " ".join(filter(None, [p["title"], p.get("sub")]))
         if rx_all_title and rx_all_title.search(text):
-            st["titolo escluso (blocked_title_keywords)"] += 1; continue
+            drop(p, "titolo escluso (blocked_title_keywords)"); continue
         if kind == "film" and rx_crime and rx_crime.search(p["title"]) and \
                 not (tid and imdb.info[tid][0] in FILM_TYPES and imdb.rating.get(tid)):
-            st["episodio serie poliziesca"] += 1; continue
+            drop(p, "episodio serie poliziesca"); continue
         ctxt = " | ".join(p["cats_all"])
         if kind == "film":
             if kid_combo and kid_combo <= set(genres):
-                st["bambini (IMDb)"] += 1; continue
+                drop(p, "bambini (IMDb)"); continue
             if p["dur"] < films_cfg.get("min_duration_minutes", 0) and p["src"] != "lv":
-                st["film troppo breve"] += 1; continue
+                drop(p, "film troppo breve"); continue
             if rx_f_title and rx_f_title.search(text):
-                st["film parola bloccata"] += 1; continue
+                drop(p, "film parola bloccata"); continue
             if p["c_series"] and not tid:
-                st["serie"] += 1; continue
+                drop(p, "serie"); continue
         else:
             if p["ch"].lower() in med:
-                st["doc Mediaset (non Focus)"] += 1; continue
+                drop(p, "doc Mediaset (non Focus)"); continue
             if p["dur"] < docs_cfg.get("min_duration_minutes", 0):
-                st["doc troppo breve"] += 1; continue
+                drop(p, "doc troppo breve"); continue
             if rx_d_cat and rx_d_cat.search(ctxt) and not re.search(r"wissenschaft|geschicht|histo|storia", ctxt, re.I):
-                st["doc categoria esclusa"] += 1; continue
+                drop(p, "doc categoria esclusa"); continue
             if rx_d_title and rx_d_title.search(text):
-                st["doc parola esclusa"] += 1; continue
+                drop(p, "doc parola esclusa"); continue
             if set(genres) & {"Reality-TV", "Game-Show", "Talk-Show", "News"}:
-                st["doc reality (IMDb)"] += 1; continue
+                drop(p, "doc reality (IMDb)"); continue
         p["kind"] = kind
         p["tid"] = tid
         p["genres"] = genres
@@ -740,6 +748,8 @@ def main():
                 p["year"] = y
         st["tenuti " + kind] += 1
         kept.append(p)
+    if os.environ.get("TVDEBUG"):
+        save_json(RAW / "dropped.json", dropped)
     log(f"Classificati: film={sum(1 for p in kept if p['kind']=='film')} doc={sum(1 for p in kept if p['kind']=='doc')}")
 
     # ---------- 6. titoli italiani

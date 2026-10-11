@@ -78,6 +78,22 @@ channels:
   - {name: "Channel 5", lang: en, cc: UK, sources: ["UK1:Channel.5.HD.uk", "CH1:Channel.5.ch"]}
   - {name: "Film4",     lang: en, cc: UK, sources: ["UK1:Film4.HD.uk", "CH1:Film.Four.ch"]}
   - {name: "More4",     lang: en, cc: UK, sources: ["UK1:More4.HD.uk"]}
+  # canali film gratuiti (Freeview)
+  - {name: "GREAT! movies",  lang: en, cc: UK, sources: ["UK1:GREAT!.movies.uk"]}
+  - {name: "GREAT! action",  lang: en, cc: UK, sources: ["UK1:GREAT!.action.uk"]}
+  - {name: "GREAT! romance", lang: en, cc: UK, sources: ["UK1:GREAT!.romance.uk"]}
+  - {name: "Talking Pictures TV", lang: en, cc: UK, sources: ["UK1:TalkingPictures.uk"]}
+  - {name: "Movies24",       lang: en, cc: UK, sources: ["UK1:Movies24.uk"]}
+  - {name: "Legend",         lang: en, cc: UK, sources: ["UK1:Legend.uk"]}
+  - {name: "Legend Xtra",    lang: en, cc: UK, sources: ["UK1:Legend.Xtra.uk"]}
+  - {name: "Sky Mix",        lang: en, cc: UK, sources: ["UK1:Sky.Mix.HD.uk"]}
+  - {name: "5ACTION",        lang: en, cc: UK, sources: ["UK1:5ACTION.uk"]}
+  - {name: "5USA",           lang: en, cc: UK, sources: ["UK1:5.USA.uk"]}
+  - {name: "5STAR",          lang: en, cc: UK, sources: ["UK1:5STAR.uk"]}
+  - {name: "ITV2",           lang: en, cc: UK, sources: ["UK1:ITV2.HD.uk"]}
+  - {name: "ITV4",           lang: en, cc: UK, sources: ["UK1:ITV4.HD.uk"]}
+  - {name: "E4",             lang: en, cc: UK, sources: ["UK1:E4.HD.uk"]}
+  - {name: "BBC Three",      lang: en, cc: UK, sources: ["UK1:BBC.Three.HD.uk"]}
 
 # Canali esclusi del tutto (qualsiasi fonte, anche La Vanguardia). Confronto robusto:
 # maiuscole/spazi/accenti ignorati, basta che il nome del canale INIZI con una di queste voci.
