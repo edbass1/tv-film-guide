@@ -58,3 +58,44 @@ jobs:
       - name: Teleboy (controllo, atteso 403)
         run: |
           curl -sS -o /dev/null -w "TELEBOY api HTTP %{http_code}\n" "https://api.teleboy.ch/epg/genres" || true
+
+  argos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Argos Translate (offline, senza chiave) de/fr -> it
+        run: |
+          START=$(date +%s)
+          pip install -q argostranslate
+          echo "pip install: $(( $(date +%s) - START ))s"
+          python - <<'PY'
+          import time, argostranslate.package as P, argostranslate.translate as T
+          t0 = time.time()
+          P.update_package_index()
+          av = P.get_available_packages()
+          print("pacchetti disponibili:", len(av), "| de->it diretto:", any(p.from_code=="de" and p.to_code=="it" for p in av),
+                "| fr->it diretto:", any(p.from_code=="fr" and p.to_code=="it" for p in av))
+          need = [("de","en"),("fr","en"),("en","it"),("es","en"),("de","it"),("fr","it")]
+          for f, t in need:
+              for p in av:
+                  if p.from_code == f and p.to_code == t:
+                      P.install_from_path(p.download()); print("installato", f, "->", t, p.package_version)
+          print("download modelli: %.1fs" % (time.time() - t0))
+          samples = {
+            "de": "Nachdem er vor seinen CIA-Verfolgern fliehen konnte, verbringt Jason Bourne mit seiner Freundin Marie glückliche Tage im indischen Goa, wird aber immer wieder von Erinnerungsfetzen heimgesucht.",
+            "fr": "Banlieusard parisien âgé d'une trentaine d'années, Kaleb voue depuis toujours une véritable passion aux animaux exotiques.",
+            "es": "Unos soldados armados toman como rehenes a 81 turistas que visitan en ese momento Alcatraz.",
+          }
+          for lang, s in samples.items():
+              t1 = time.time(); out = T.translate(s, lang, "it")
+              print(f"[{lang}->it {time.time()-t1:.1f}s] {out}")
+          # throughput: 50 descrizioni tedesche
+          txt = samples["de"]; t1 = time.time()
+          for _ in range(50): T.translate(txt + " " + str(_), "de", "it")
+          dt = time.time() - t1
+          print(f"50 descrizioni de->it ({50*len(txt)} caratteri): {dt:.1f}s => {50*len(txt)/dt:.0f} caratteri/s")
+          PY
+          echo "totale: $(( $(date +%s) - START ))s"
