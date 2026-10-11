@@ -136,13 +136,15 @@ def parse_xmltv(path, wanted_ids):
     return out
 
 
-def merge_sources(lists):
-    """Prima lista non vuota = principale; le altre completano anno/categorie/descrizione per lo stesso orario."""
-    lists = [l for l in lists if l]
-    if not lists:
+def merge_sources(named, desc_from=None):
+    """Prima lista non vuota = principale; le altre completano anno/categorie/descrizione per lo stesso orario.
+    desc_from = file (es. UK1) la cui descrizione ha la precedenza (lingua originale del canale)."""
+    named = [(n, l) for n, l in named if l]
+    if not named:
         return []
+    lists = [l for _, l in named]
     primary = [dict(p) for p in lists[0]]
-    for l in lists[1:]:
+    for src, l in named[1:]:
         starts = sorted(l, key=lambda q: q["begin"])
         for p in primary:
             best = None
@@ -162,7 +164,7 @@ def merge_sources(lists):
                     p["cats"] = list(q["cats"])
                 else:
                     p.setdefault("cats2", []).extend(q["cats"])
-            if not p["desc"] and q["desc"]:
+            if q["desc"] and (not p["desc"] or (desc_from and src.split(":")[0] == desc_from)):
                 p["desc"] = q["desc"]
             if not p["ep"] and q["ep"]:
                 p["ep"] = q["ep"]
@@ -487,6 +489,24 @@ class Translator:
         save_json(CACHE / "translations.json", self.cache)
 
 
+_SW = {
+    "de": "der die das und ist nicht ein eine mit sich auf für den dem des von zu im sie er wird nach bei auch als".split(),
+    "en": "the and is of to in a with his her their they for on as an that this who from by when after".split(),
+    "fr": "le la les et est des une un du dans pour qui sur avec son sa ses au aux ne pas elle il".split(),
+    "es": "el la los las y es del una un en por con su sus que para se al lo como pero".split(),
+    "it": "il lo la gli le e è del della una un di in per con suo sua che non si al alla nel".split(),
+}
+
+
+def detect_lang(text, default=None):
+    words = re.findall(r"[a-zàâäçéèêëîïôöùûüñß']+", (text or "").lower())
+    if len(words) < 4:
+        return default
+    best = max(_SW, key=lambda l: sum(1 for w in words if w in _SW[l]))
+    score = sum(1 for w in words if w in _SW[best])
+    return best if score >= 2 else default
+
+
 def shorten(text, n):
     text = re.sub(r"\s+", " ", (text or "").replace("\\n", " ")).strip()
     if len(text) <= n:
@@ -579,7 +599,8 @@ def main():
     items = []
     epg_last = None
     for c in chans:
-        lst = merge_sources([progs.get(s) for s in c["sources"]])
+        lst = merge_sources([(s, progs.get(s)) for s in c["sources"]],
+                            c.get("desc_from") or ("UK1" if c["cc"] == "UK" else None))
         if not lst:
             log(f"  ! nessun dato per {c['name']}")
             stats["canali"]["senza dati"] += 1
@@ -781,9 +802,13 @@ def main():
         if p.get("desc"):
             p["desc"] = shorten(p["desc"], nmax)
     order = sorted(kept, key=lambda p: (not p["prime"], p["begin"]))
-    for lang in sorted(langs):
-        titles = [p["title"] for p in order if p["lang"] == lang and not p.get("it")]
-        descs = [p["desc"] for p in order if p["lang"] == lang and p.get("desc")]
+    dlangs = set(cfg["translation"].get("desc_languages") or langs)
+    for p in kept:
+        if p.get("desc"):
+            p["dlang"] = detect_lang(p["desc"], p["lang"])
+    for lang in sorted(langs | dlangs):
+        titles = [p["title"] for p in order if p["lang"] == lang and lang in langs and not p.get("it")]
+        descs = [p["desc"] for p in order if p.get("desc") and p["dlang"] == lang and lang in dlangs]
         tr.translate_many(lang, titles + descs)
         tr.save()
     for p in kept:
@@ -791,10 +816,9 @@ def main():
             t = tr.get(p["lang"], p["title"])
             if t and fkey(t) != fkey(p["title"]):
                 p["it"], p["it_src"] = t, "auto"
-        if p["lang"] in langs and p.get("desc"):
-            t = tr.get(p["lang"], p["desc"])
+        if p.get("desc") and p["dlang"] in dlangs:
+            t = tr.get(p["dlang"], p["desc"])
             if t:
-                p["desc_orig_lang"] = p["lang"]
                 p["desc"], p["desc_auto"] = t, True
 
     # ---------- 8. generi, argomenti, clou
@@ -838,7 +862,7 @@ def main():
              "e": p["end"].isoformat(), "dur": p["dur"], "g": p.get("genre"), "y": p.get("year"),
              "prime": p["prime"], "clou": p["clou"], "score": p["score"]}
         for k_src, k in (("it", "it"), ("it_src", "its"), ("orig", "o"), ("sub", "sub"), ("imdb", "r"), ("votes", "v"),
-                         ("tid", "id"), ("lv", "lv"), ("dual", "dual"), ("desc", "d"), ("desc_auto", "da"), ("url", "u")):
+                         ("tid", "id"), ("lv", "lv"), ("dual", "dual"), ("desc", "d"), ("desc_auto", "da"), ("dlang", "dl"), ("url", "u")):
             if p.get(k_src) not in (None, "", [], False):
                 o[k] = p[k_src]
         if p["kind"] == "doc" and p.get("year") and p.get("tid") is None:
@@ -894,7 +918,8 @@ def main():
             "film_titolo_it_ufficiale(non it)": cov([x for x in allf if x["lang"] != "it"], lambda x: x.get("its") == "ufficiale"),
             "titoli_de_fr_es_in_italiano": cov([x for x in allf + alld if x["lang"] in langs], lambda x: x.get("it")),
             "titoli_de_fr_es_traduzione_automatica": cov([x for x in allf + alld if x["lang"] in langs], lambda x: x.get("its") == "auto"),
-            "descrizioni_de_fr_es_tradotte": cov([x for x in allf + alld if x["lang"] in langs and x.get("d")], lambda x: x.get("da")),
+            "descrizioni_non_italiane_tradotte": cov([x for x in allf + alld if x.get("d") and x.get("dl") != "it"], lambda x: x.get("da")),
+            "descrizioni_uk_tradotte": cov([x for x in allf + alld if x.get("d") and x["cc"] == "UK"], lambda x: x.get("da")),
         },
         "traduzioni": {"nuove": tr.new, "rimandate": tr.skipped, "errore": tr.failed, "in_cache": len(tr.cache)},
         "epg_ultimo_inizio": epg_last.isoformat() if epg_last else None,

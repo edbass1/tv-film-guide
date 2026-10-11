@@ -33,7 +33,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/huggingface
-          key: hf-opus-mt-de-fr-es-v1
+          key: hf-opus-mt-de-fr-es-en-v2
 
       - name: Genera la pagina
         env:

@@ -4,7 +4,7 @@ var G = window.GUIDE;
 var KINDS = [["films","FILM"],["docs","DOCUMENTARI"]];
 var VIEWS = [["prime","Prima serata"],["clou","Il clou"],["genre","Per genere"],["rating","Per voto"],["all","Tutti per orario"]];
 var CC = {DE:"Germania",AT:"Austria",CH:"Svizzera",FR:"Francia",IT:"Italia",UK:"Regno Unito",ES:"Spagna"};
-var LANG = {de:"tedesco",fr:"francese",es:"spagnolo",en:"inglese",it:"italiano"};
+var FROM = {de:"dal tedesco",fr:"dal francese",es:"dallo spagnolo",en:"dall'inglese"};
 var COUNTRIES = [["IT","Canali italiani"],["CH","Canali svizzeri"],["DE","Canali tedeschi"],["AT","Canali austriaci"],["FR","Canali francesi"],["UK","Canali inglesi"],["ES","Canali spagnoli"]];
 var hidden = {};
 try { hidden = JSON.parse(localStorage.getItem("tvcc")||"{}")||{}; } catch(e){ hidden = {}; }
@@ -77,7 +77,7 @@ function card(i){
   if (i.clou) h += '<span class="b clou">★ CLOU</span>';
   h += '<span class="b cc">'+esc(CC[i.cc]||i.cc)+'</span>';
   h += '</div>';
-  if (i.d) h += '<p class="desc">'+esc(i.d)+(i.da?' <em class="mt">(traduzione automatica dal '+esc(LANG[i.lang]||i.lang)+')</em>':'')+'</p>';
+  if (i.d) h += '<p class="desc">'+esc(i.d)+(i.da?' <em class="mt">(traduzione automatica '+esc(FROM[i.dl||i.lang]||"")+')</em>':'')+'</p>';
   if (i.also && i.also.length) h += '<p class="also">Anche: '+i.also.map(function(a){return esc(a.ch)+' '+dshort(a.b)+' '+hhmm(a.b)+(a.dual?' (doppio audio)':'');}).join(" · ")+'</p>';
   return h + '</article>';
 }

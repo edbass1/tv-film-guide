@@ -281,12 +281,13 @@ imdb:
   aka_regions: [DE, AT, CH, FR, IT, ES, GB, US, XWW, CA, BE]
 
 # ---------------------------------------------------------------------
-#  Traduzioni (SOLO tedesco, francese, spagnolo -> italiano; l'inglese resta com'è)
+#  Traduzioni in italiano: titoli de/fr/es, descrizioni de/fr/es/en
 # ---------------------------------------------------------------------
 translation:
-  languages: [de, fr, es]
+  languages: [de, fr, es]          # titoli tradotti automaticamente (l'inglese no: resta originale o titolo italiano ufficiale)
+  desc_languages: [de, fr, es, en] # descrizioni tradotte (lingua riconosciuta dal testo)
   engine: marian                  # marian = modelli Helsinki-NLP opus-mt (offline, senza chiave)
-  models: {de: "Helsinki-NLP/opus-mt-de-it", fr: "Helsinki-NLP/opus-mt-tc-big-itc-itc", es: "Helsinki-NLP/opus-mt-es-it"}
+  models: {de: "Helsinki-NLP/opus-mt-de-it", fr: "Helsinki-NLP/opus-mt-tc-big-itc-itc", es: "Helsinki-NLP/opus-mt-es-it", en: "Helsinki-NLP/opus-mt-en-it"}
   max_desc_chars: 420             # descrizioni accorciate (a fine frase) prima di tradurre
   max_seconds_per_run: 2400       # tempo massimo di traduzione per esecuzione; il resto alla prossima
   wikidata_titles: true           # titoli italiani ufficiali da Wikidata (oltre a IMDb)
