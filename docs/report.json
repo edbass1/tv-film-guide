@@ -1,68 +1,68 @@
 {
- "generato": "2026-10-11T14:31+02:00",
- "durata_secondi": 130,
+ "generato": "2026-10-11T14:34+02:00",
+ "durata_secondi": 222,
  "conteggi_per_giorno": [
   {
    "giorno": "2026-10-11",
-   "film": 156,
-   "documentari": 59,
+   "film": 212,
+   "documentari": 66,
    "film_spagna": 60,
-   "film_prima_serata": 35,
-   "doc_prima_serata": 4
+   "film_prima_serata": 42,
+   "doc_prima_serata": 5
   },
   {
    "giorno": "2026-10-12",
-   "film": 165,
-   "documentari": 56,
+   "film": 210,
+   "documentari": 62,
    "film_spagna": 85,
-   "film_prima_serata": 38,
+   "film_prima_serata": 47,
    "doc_prima_serata": 14
   },
   {
    "giorno": "2026-10-13",
-   "film": 121,
-   "documentari": 57,
+   "film": 149,
+   "documentari": 63,
    "film_spagna": 46,
-   "film_prima_serata": 26,
-   "doc_prima_serata": 13
+   "film_prima_serata": 32,
+   "doc_prima_serata": 14
   },
   {
    "giorno": "2026-10-14",
-   "film": 46,
+   "film": 49,
    "documentari": 43,
    "film_spagna": 0,
-   "film_prima_serata": 11,
+   "film_prima_serata": 12,
    "doc_prima_serata": 8
   }
  ],
  "filtri": {
   "programmi": {
    "canale escluso (blocked_channels)": 0,
-   "totale": 6566,
-   "tenuti film": 526,
-   "non film/doc": 4891,
+   "totale": 7647,
+   "tenuti film": 665,
+   "non film/doc": 5620,
    "doc troppo breve": 150,
-   "bambini": 573,
-   "tenuti doc": 252,
+   "bambini": 607,
+   "tenuti doc": 276,
    "titolo escluso (blocked_title_keywords)": 5,
-   "doc parola esclusa": 97,
-   "doc categoria esclusa": 22,
+   "doc parola esclusa": 116,
+   "doc categoria esclusa": 23,
    "episodio serie poliziesca": 11,
    "doc natura/lifestyle (descrizione)": 25,
-   "film troppo breve": 8,
+   "film troppo breve": 130,
    "erotici": 2,
    "doc Mediaset (non Focus)": 1,
-   "doc reality (IMDb)": 3
+   "doc reality (IMDb)": 16
   }
  },
  "copertura": {
-  "film_con_imdb": "430/488",
-  "film_epg_con_imdb": "265/297",
+  "film_con_imdb": "535/620",
+  "film_epg_con_imdb": "370/429",
   "film_spagna_con_imdb": "165/191",
-  "doc_con_imdb": "16/215",
-  "film_doppio_audio": "118/488",
-  "doc_doppio_audio": "137/215",
-  "film_titolo_it_ufficiale(non it)": "171/303",
+  "doc_con_imdb": "20/234",
+  "film_doppio_audio": "118/620",
+  "doc_doppio_audio": "137/234",
+  "film_titolo_it_ufficiale(non it)": "228/430",
   "titoli_de_fr_es_in_italiano": "385/432",
   "titoli_de_fr_es_traduzione_automatica": "231/432",
   "descrizioni_de_fr_es_tradotte": "430/430"
