@@ -609,6 +609,8 @@ def main():
             if p["end"] <= win_start or p["begin"] >= win_end:
                 continue
             epg_last = max(epg_last or p["begin"], p["begin"])
+            # orari XMLTV in UTC (+0000): convertiti nel fuso orario della pagina
+            p["begin"], p["end"] = p["begin"].astimezone(tz), p["end"].astimezone(tz)
             p.update(ch=c["name"], lang=c["lang"], cc=c["cc"], src="epg",
                      dur=int((p["end"] - p["begin"]).total_seconds() // 60))
             items.append(p)
@@ -858,8 +860,10 @@ def main():
           "ottobre", "novembre", "dicembre"]
 
     def pack(p):
+        end = p["end"] if p.get("end") and p["end"] > p["begin"] else \
+            p["begin"] + dt.timedelta(minutes=p.get("dur") or (120 if p["kind"] == "film" else 60))
         o = {"t": p["title"], "ch": p["ch"], "cc": p["cc"], "lang": p["lang"], "b": p["begin"].isoformat(),
-             "e": p["end"].isoformat(), "dur": p["dur"], "g": p.get("genre"), "y": p.get("year"),
+             "e": end.isoformat(), "dur": p["dur"], "g": p.get("genre"), "y": p.get("year"),
              "prime": p["prime"], "clou": p["clou"], "score": p["score"]}
         for k_src, k in (("it", "it"), ("it_src", "its"), ("orig", "o"), ("sub", "sub"), ("imdb", "r"), ("votes", "v"),
                          ("tid", "id"), ("lv", "lv"), ("dual", "dual"), ("desc", "d"), ("desc_auto", "da"), ("dlang", "dl"), ("url", "u")):

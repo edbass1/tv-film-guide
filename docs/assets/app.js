@@ -10,15 +10,26 @@ var hidden = {};
 try { hidden = JSON.parse(localStorage.getItem("tvcc")||"{}")||{}; } catch(e){ hidden = {}; }
 function ccOn(cc){ return !hidden[cc]; }
 // un programma resta visibile se il suo canale (o una replica) è di un paese selezionato
-function visible(i){
-  if (ccOn(i.cc)) {
-    if (!i.also) return i;
-    var o = Object.assign({}, i); o.also = i.also.filter(function(a){ return ccOn(a.cc||i.cc); }); return o;
-  }
-  var alt = (i.also||[]).filter(function(a){ return a.cc && ccOn(a.cc); });
-  if (!alt.length) return null;
-  var o2 = Object.assign({}, i, {ch:alt[0].ch, cc:alt[0].cc, b:alt[0].b, e:alt[0].e||i.e, prime:alt[0].prime, dual:alt[0].dual, also:alt.slice(1)});
-  return o2;
+// un programma sparisce 2 ore dopo l'INIZIO (o prima, se è già finito)
+var HIDE_AFTER_MS = 2*3600e3;
+function endMs(x, kind){
+  var b = new Date(x.b).getTime(), e = x.e ? new Date(x.e).getTime() : NaN;
+  if (!(e > b)) e = b + ((x.dur||0) ? x.dur*60e3 : (kind==="docs" ? 3600e3 : 7200e3));
+  return e;
+}
+function gone(x, kind, now){ var b = new Date(x.b).getTime(); return now >= Math.min(b + HIDE_AFTER_MS, endMs(x, kind)); }
+// sceglie quale messa in onda mostrare: paese selezionato e (se non si mostrano i finiti) non ancora "scaduta"
+function visible(i, kind, showPast, now){
+  var airs = [{ch:i.ch, cc:i.cc, b:i.b, e:i.e, dur:i.dur, prime:i.prime, dual:i.dual, main:true}];
+  (i.also||[]).forEach(function(a){ airs.push({ch:a.ch, cc:a.cc||i.cc, b:a.b, e:a.e, dur:a.e?null:i.dur, prime:a.prime, dual:a.dual}); });
+  var ok = airs.filter(function(a){ return ccOn(a.cc); });
+  var live = showPast ? ok : ok.filter(function(a){ return !gone(a, kind, now); });
+  if (!live.length) return null;
+  var pick = live.filter(function(a){ return a.main; })[0] || live.slice().sort(function(x,y){ return x.b.localeCompare(y.b); })[0];
+  var o = Object.assign({}, i, {ch:pick.ch, cc:pick.cc, b:pick.b, e:pick.e||i.e, prime:pick.prime==null?i.prime:pick.prime, dual:pick.dual});
+  o.also = live.filter(function(a){ return a!==pick; }).sort(function(x,y){ return x.b.localeCompare(y.b); });
+  o._gone = gone(pick, kind, now);
+  return o;
 }
 var st = {day:0, kind:"films", view:"prime", genre:null};
 try { Object.assign(st, JSON.parse(sessionStorage.getItem("tvst2")||"{}")); } catch(e){}
@@ -32,14 +43,19 @@ document.getElementById("fontPlus").onclick=function(){ if(fs<6){fs++;localStora
 document.getElementById("fontMinus").onclick=function(){ if(fs>-2){fs--;localStorage.setItem("tvfs",fs);applyFs();} };
 
 function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];}); }
-function hhmm(iso){ return iso.substr(11,5); }
+var TZ = "Europe/Rome";
+var fmtT = new Intl.DateTimeFormat("it-IT",{timeZone:TZ,hour:"2-digit",minute:"2-digit",hour12:false});
+var fmtD = new Intl.DateTimeFormat("en-CA",{timeZone:TZ,year:"numeric",month:"2-digit",day:"2-digit"});
+function hhmm(iso){ return fmtT.format(new Date(iso)); }
+// giorno TV (che inizia alle 05:00) di un orario, nel fuso italiano
+function tvDay(iso){ return fmtD.format(new Date(new Date(iso).getTime()-5*3600e3)); }
 var WD=["dom","lun","mar","mer","gio","ven","sab"];
-function dshort(iso){ var d=new Date(iso.substr(0,10)+"T12:00:00"); return WD[d.getDay()]+" "+d.getDate()+"/"+(d.getMonth()+1); }
+function dshort(iso){ var d=new Date(fmtD.format(new Date(iso))+"T12:00:00"); return WD[d.getDay()]+" "+d.getDate()+"/"+(d.getMonth()+1); }
 
 var gd = new Date(G.generated);
 document.getElementById("updated").textContent = "Aggiornato: " + gd.toLocaleString("it-IT",{weekday:"long",day:"numeric",month:"long",hour:"2-digit",minute:"2-digit"});
 // salta i giorni già passati (se la pagina non è stata aggiornata da poco)
-var todayIso = new Date(Date.now()-5*3600e3).toISOString().substr(0,10);
+var todayIso = tvDay(new Date().toISOString());
 var first = 0; while (first < G.days.length-1 && G.days[first].date < todayIso) first++;
 var DAYS = G.days.slice(first);
 if (st.day >= DAYS.length) st.day = 0;
@@ -54,12 +70,12 @@ function btns(el, list, cur, onpick){
   });
 }
 function card(i){
-  var now = Date.now(), past = new Date(i.e).getTime() < now;
+  var past = !!i._gone;
   var title = i.it || i.t;
   var h = '<article class="card'+(past?' past':'')+'">';
   h += '<div class="when"><span class="time">'+hhmm(i.b)+'</span><span class="chan">'+esc(i.ch)+'</span>';
-  if (i.b.substr(0,10)!==DAYS[st.day].date) h += '<span class="date">'+dshort(i.b)+'</span>';
-  if (past) h += '<span class="date">(finito)</span>';
+  if (tvDay(i.b)!==DAYS[st.day].date) h += '<span class="date">'+dshort(i.b)+'</span>';
+  if (past) h += '<span class="date">(già iniziato da oltre 2 ore)</span>';
   h += '</div>';
   h += '<h3 class="title">'+(i.u?'<a href="'+esc(i.u)+'" target="_blank" rel="noopener">'+esc(title)+'</a>':esc(title));
   if (i.dual) h += ' <span class="b dual" title="Canale con doppio audio (lingua originale)">DOPPIO AUDIO</span>';
@@ -90,7 +106,8 @@ function render(){
   save();
   var D = DAYS[st.day];
   var V = {};
-  ["films","docs"].forEach(function(k){ V[k] = D[k].map(visible).filter(Boolean); });
+  var showPast0 = document.getElementById("showPast").checked, now0 = Date.now();
+  ["films","docs"].forEach(function(k){ V[k] = D[k].map(function(i){ return visible(i, k, showPast0, now0); }).filter(Boolean); });
   var cbox = document.getElementById("countries");
   if (!cbox.dataset.done){
     cbox.dataset.done = "1";
@@ -120,7 +137,6 @@ function render(){
   var now=Date.now();
   var items = V[st.kind].filter(function(i){
     if (onlyDual && !i.dual) return false;
-    if (!showPast && new Date(i.e).getTime() < now) return false;
     return true;
   });
   var kname = st.kind==="docs"?"documentari":"film";
@@ -153,5 +169,8 @@ function render(){
 }
 document.getElementById("onlyDual").onchange=render;
 document.getElementById("showPast").onchange=render;
+// ricontrolla ogni minuto senza ricaricare la pagina (mantiene la posizione di scorrimento)
+setInterval(function(){ var y = window.scrollY; render(); window.scrollTo(0, y); }, 60000);
+document.addEventListener("visibilitychange", function(){ if (!document.hidden) { var y = window.scrollY; render(); window.scrollTo(0, y); } });
 render();
 })();
