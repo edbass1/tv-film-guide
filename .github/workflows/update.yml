@@ -1,0 +1,45 @@
+name: Aggiorna guida TV
+
+on:
+  schedule:
+    - cron: "15 */6 * * *"     # ogni 6 ore (UTC)
+  workflow_dispatch: {}         # avvio manuale dal tab "Actions"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: tv-guide
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Installa dipendenze
+        run: pip install -r requirements.txt
+
+      - name: Genera la pagina
+        env:
+          TZ: Europe/Zurich
+        run: python build.py
+
+      - name: Salva il risultato (docs/ + cache traduzioni)
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs cache/wikidata_imdb.json cache/wikidata_search.json cache/mymemory.json
+          if git diff --cached --quiet; then
+            echo "Nessuna modifica"
+          else
+            git commit -m "Aggiornamento guida TV $(date -u +'%Y-%m-%d %H:%M') UTC"
+            git push
+          fi

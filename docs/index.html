@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#000000">
+<title>Film e Documentari in TV</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="top">
+  <h1>Film e Documentari in TV</h1>
+  <p id="updated" class="updated">Caricamento…</p>
+  <div class="fontsize" role="group" aria-label="Dimensione del testo">
+    <button type="button" id="fontMinus" aria-label="Testo più piccolo">A−</button>
+    <button type="button" id="fontPlus" aria-label="Testo più grande">A+</button>
+  </div>
+</header>
+
+<nav class="days" id="days" aria-label="Scegli il giorno"></nav>
+<nav class="kinds" id="kinds" aria-label="Scegli la sezione"></nav>
+<nav class="views" id="views" aria-label="Scegli la vista"></nav>
+<div class="options">
+  <label><input type="checkbox" id="onlyDual"> Solo DOPPIO AUDIO</label>
+  <label><input type="checkbox" id="showPast"> Mostra anche quelli già finiti</label>
+</div>
+
+<main id="main" aria-live="polite"></main>
+
+<footer class="foot">
+  <p>Dati: Teleboy.ch (guida TV) e La Vanguardia (canali spagnoli). Voti IMDb come forniti da Teleboy.
+  Titoli italiani da Wikidata; i titoli dei documentari segnati “trad. automatica” sono tradotti con MyMemory.</p>
+  <p>DOPPIO AUDIO = canali con audio in lingua originale disponibile (lista configurata) oppure segnalato da Teleboy.
+  Verificare sempre sul televisore: non tutti i programmi hanno davvero la seconda lingua.</p>
+</footer>
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
