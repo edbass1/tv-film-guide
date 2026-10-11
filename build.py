@@ -665,6 +665,8 @@ def main():
     rx_d_title = kw_regex(docs_cfg.get("blocked_title_keywords"))
     rx_d_cat = kw_regex(docs_cfg.get("blocked_category_keywords"))
     rx_d_desc = kw_regex(docs_cfg.get("blocked_desc_keywords"))
+    rx_all_title = kw_regex(cfg.get("blocked_title_keywords"))
+    rx_crime = kw_regex(cfg.get("crime_series_title_keywords"))
     med = lower_set(cfg["mediaset"]["channels"]) - lower_set(cfg["mediaset"]["keep_docs_on"])
     kid_combo = set(kids.get("imdb_genre_combo") or [])
     kept = []
@@ -699,6 +701,11 @@ def main():
             st["doc natura/lifestyle (descrizione)"] += 1; continue
         genres = imdb.info[tid][4] if tid else []
         text = " ".join(filter(None, [p["title"], p.get("sub")]))
+        if rx_all_title and rx_all_title.search(text):
+            st["titolo escluso (blocked_title_keywords)"] += 1; continue
+        if kind == "film" and rx_crime and rx_crime.search(p["title"]) and \
+                not (tid and imdb.info[tid][0] in FILM_TYPES and imdb.rating.get(tid)):
+            st["episodio serie poliziesca"] += 1; continue
         ctxt = " | ".join(p["cats_all"])
         if kind == "film":
             if kid_combo and kid_combo <= set(genres):

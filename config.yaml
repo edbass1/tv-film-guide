@@ -83,6 +83,26 @@ channels:
 # maiuscole/spazi/accenti ignorati, basta che il nome del canale INIZI con una di queste voci.
 blocked_channels: ["wedo Film al Femminile", WeDo, "We Do", "WeDo TV", "wedo film"]
 
+# Titoli esclusi SEMPRE (film e documentari, tutti i canali)
+blocked_title_keywords: [Tatort]
+
+# Episodi di serie poliziesche tedesche (spesso classificati come "film" nella guida):
+# esclusi quando NON hanno un voto IMDb da film
+crime_series_title_keywords: ["Inspector Barnaby", "Inspektor Barnaby", "Polizeiruf 110", Polizeiruf, "Der Alte",
+  SOKO, "Der Bulle von Tölz", "Die Rosenheim-Cops", "Rosenheim-Cops", Wilsberg, Kommissar, Kommissarin,
+  "Ein starkes Team", "Nord bei Nordwest", "Der Usedom-Krimi", "Usedom-Krimi", "Der Kroatien-Krimi",
+  "Der Irland-Krimi", "Der Bozen-Krimi", "Der Barcelona-Krimi", "Der Masuren-Krimi", "Der Ostfriesenkrimi",
+  "Ostfriesenkrimi", "Steirerkrimi", "Landkrimi", "Stralsund", "Der Kommissar und das Meer", "Die Toten vom Bodensee",
+  "Der Taunuskrimi", "Taunuskrimi", "Die Chefin", "Der Staatsanwalt", "Ein Fall für zwei", "Hubert ohne Staller",
+  "Hubert und Staller", "Morden im Norden", "Notruf Hafenkante", "WaPo", "Großstadtrevier", "Die Bergretter",
+  "Watzmann ermittelt", "Bettys Diagnose", "Der Bergdoktor", "Die Spreewaldkrimis", "Spreewaldkrimi", "Kommissar Dupin",
+  "Kommissar Rex", "Kommissar Wallander", "Kommissarin Lund", "Kommissarin Heller", "Kommissar Pascha",
+  "Kommissar Kluftinger", "Kluftinger", "Erzgebirgskrimi", "Der Zürich-Krimi", "Zürich-Krimi", "Friesland",
+  "Neben der Spur", "Die Füchsin", "Der Lissabon-Krimi", "Lissabon-Krimi", "Mord mit Aussicht", "Sarah Kohr",
+  "Tiroler Blut", "Der Kriminalist", "Die Kanzlei", "Der Tel-Aviv-Krimi", "Der Athen-Krimi", "Marie Brand",
+  "Helen Dorn", "Dengler", "Unter anderen Umständen", "Kommissar Marthaler", "Harter Brocken", "Der Wien-Krimi",
+  "Wiener Blut", "Schnell ermittelt", "SOKO Kitzbühel", "SOKO Donau", "Die Rosenheim Cops", "Dahoam is Dahoam"]
+
 # Canali di lingua tedesca (DE/AT/CH): tieni SOLO quelli della lista DOPPIO AUDIO
 german_language_only_listed: true
 
