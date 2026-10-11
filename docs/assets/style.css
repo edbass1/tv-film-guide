@@ -57,3 +57,7 @@ p.hint{color:var(--muted);margin:.2rem 0 1rem;font-size:.9rem}
   nav button{padding:.5rem .4rem}
   .days button small{font-size:.65rem}
 }
+.b.cc{background:#222;color:var(--muted);border-color:#444}
+a.b.imdb{text-decoration:none}
+em.mt{color:#9fd3ff;font-style:italic;font-size:.85em}
+.title .b.dual{font-size:.6em;vertical-align:middle}

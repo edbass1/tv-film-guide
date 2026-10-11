@@ -3,3 +3,4 @@ research/
 __pycache__/
 build.log
 cache/teleboy_key.txt
+raw/

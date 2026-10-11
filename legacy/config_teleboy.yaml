@@ -1,0 +1,223 @@
+# =====================================================================
+#  Configurazione della Guida TV Film & Documentari
+#  Modifica questo file per cambiare filtri, canali, parole bloccate.
+#  I nomi dei canali sono le "label" di Teleboy (es. "SRF1", "Arte",
+#  "Canale5"); il confronto non distingue maiuscole/minuscole.
+# =====================================================================
+
+timezone: "Europe/Zurich"     # stesso fuso di Roma/Madrid
+days_ahead: 5                 # oggi + 5 giorni
+day_starts_at: "05:00"        # "giornata TV": i programmi tra 00:00 e 05:00 contano per la sera prima
+
+prime_time:
+  from: "20:00"
+  to: "22:30"                 # orario di INIZIO compreso tra from e to
+
+teleboy:
+  page_for_key: "https://www.teleboy.ch/en/tv-guide/genre/2/documentary"
+  api_base: "https://api.teleboy.ch"
+  film_genre_id: 1
+  doc_genre_ids: [2]          # 2 = Documentari (38 = Scienza, 9 = Cultura si possono aggiungere)
+  page_size: 300              # massimo consentito dall'API
+
+lavanguardia:
+  enabled: true
+  url: "https://www.lavanguardia.com/television/programacion-tv/peliculas"
+
+# Lingue dei canali da ESCLUDERE (codici Teleboy). Lascia [] per tenere tutto.
+exclude_station_languages: [ua, tr, ar, kr, jp, pt, nl]
+
+# ---------------------------------------------------------------------
+#  Bambini / ragazzi: esclusi sia dai film che dai documentari
+# ---------------------------------------------------------------------
+kids:
+  genre_ids: [20, 6, 25, 27]  # 20 = Film per bambini, 6 = Bambini, 25/27 serie animate/ragazzi
+  exclude_animation_max_age: 6   # film d'animazione con età consigliata <= 6 => esclusi (null = non escludere)
+  channels: [KiKa, TOGGOplus, DisneyChannel, "S-RTLch", CBBC, CBeebies, Gulli, RaiGulp, RaiYoyo,
+             Boing, BoingPlus, Cartoonito, Frisbee, K2, "Super!", Naruto,
+             # La Vanguardia (Spagna)
+             "Clan TVE", "Clan", "Super3-33", "SX3", "Disney Channel"]
+  title_keywords: ["Wissen macht Ah", "Willi wills wissen", "Sendung mit der Maus", "Löwenzahn",
+                   "Look at me", "L'Albero Azzurro", "Peppa", "Paw Patrol", "Pokémon", "Bluey",
+                   "Barbie", "Pippi", "Heidi", "Biene Maja", "Feuerwehrmann Sam", "Lassie",
+                   "Märchen", "Bärenfell", "Teufelsfeder", "Goldene Gans", "Geschichten vom Franz",
+                   "Capitán Calzoncillos"]
+
+# ---------------------------------------------------------------------
+#  Mediaset: documentari esclusi TRANNE il canale Focus
+# ---------------------------------------------------------------------
+mediaset:
+  channels: [Canale5, Italia1, Italia2, Rete4, Iris, MediasetExtra2, 27Twentyseven, 20Mediaset,
+             TOPcrime, Cine34, TGcom24, LA5, Boing, BoingPlus, Cartoonito, Focus]
+  keep_docs_on: [Focus]
+
+# ---------------------------------------------------------------------
+#  Documentari: solo quelli "importanti"
+# ---------------------------------------------------------------------
+docs:
+  min_duration_minutes: 40
+  # Un documentario resta in pagina solo se soddisfa ALMENO UNA condizione:
+  #   quality_channel = canale della lista quality_channels qui sotto
+  #   imdb            = voto IMDb >= important_min_imdb
+  #   tip             = consigliato dalla redazione Teleboy
+  #   prime_time      = inizia in prima serata
+  # Lascia la lista vuota [] per non applicare questo filtro.
+  require_one_of: [quality_channel, imdb, tip, prime_time]
+  important_min_imdb: 7.0
+  quality_channel_min_duration: 45   # sui canali di qualità, solo documentari di almeno 45 minuti
+  # Canali esclusi per i documentari (tv locali svizzere, religiosi, televendite,
+  # docu-reality, lezioni universitarie, loop di riempitivo...)
+  blocked_channels: [
+    # tv locali / regionali svizzere
+    LemanBleu, TeleTop, TVO, TBärn, TZüri, Tele1, TeleM1, TBasel, TSO, TeleZ, TeleBielingue,
+    TeleD, TVOberwallis, Kanal9, Canal9, SchaffhauserFernsehen, CanalAlphaNeuchatel, CanalAlphaJura,
+    LaTele, TeleTicino, RadioTicinoChannel, 1FLTV, 8MontBlanc, "Canal B D", "Canal B F",
+    # religiosi
+    auftanken.tv, BibelTV, K-TV, KTO, GODChannel, SONLife, TV2000, RecordTV,
+    # televendite / riempitivi
+    HSE24, HSE24Extra, HSE24Trend, QS24, Anixe, AnixePlus, WeltderWunder, CARAC1HD, CARAC2CHHD,
+    CARAC3HD, TVSuissePlus, beCuriousTV, MelodieTV, HelvetiaOneTV, R9Österreich,
+    # docu-reality / motori / casa / cucina
+    DMAX, DMAXItalia, "DMAX UK", RealTime, HGTVItaly, HomeGardenTV, "Food Network Italia", FoodNetwork,
+    "Motor Trend", "Drive TV", MotorvisionPlus, TLCGermany, RTL2ch, VOXch, Puls8, Sat.1ch, Kabel1ch,
+    RTLch, Pro7ch, Pro7Maxx, 5STAR, 5ACTION, "Quest Red", "Sky Mix", "Enquetes De Choc", TopTrueCrime,
+    Homicide, CSTAR, TFX, "RMC Life", ITV1, ITV2, ITV3, ITV4, ITVBe, 4Seven, NOVE, Cielo,
+    # sport / lezioni / notizie brevi
+    UNU, RaiScuola, "Wedo Sports", "Swiss Sport TV", "Red Bull TV (engl.)", Scooore, LEquipe21,
+    mySportsEins, mySports2, mySports3, mySports4, mySports5, mySports6, mySports7, mySports8,
+    mySports9, "mySports Uno", mySportsEdge, mySportsUn, EuNews, EuNews-e, EuNews-f, EuNews-i,
+    Fr24, FranceInfo, CNEWS, BBCNews, BBCwn, AlmaTV, S4C, tagesschau24, BloombergQuicktakeHD, BloombergEn,
+    CNBC, CNN, SkyNews, DWspanish, TVEi, 24H,
+    # canali "doc" che trasmettono quasi solo docu-reality / riempitivi
+    Kabel1Doku, RMCDecouverte, RMCStory, Dave, Xplore, "One Terra", DF1, wedobigstories, "Curiosity Now",
+    TVM3, TMC, Quest, "wedo True Stories"
+  ]
+  # Parole nel titolo (o sottotitolo) che escludono il documentario.
+  # Docu-reality, banchi dei pegni, aste, magazzini, auto da rivendere, polizia/dogane, ecc.
+  blocked_title_keywords: [
+    "Affari di famiglia", "Pawn Stars", "Pfandleiher", "Kings of Cash", "Hardcore Pawn",
+    "Affari al buio", "Storage Wars", "Storage Hunters", "Auction", "Auktion", "Asta",
+    "Affari a quattro ruote", "Wheeler Dealers", "Fast N' Loud", "Counting Cars", "American Pickers",
+    "Chasing Classic Cars", "Kultschrauber", "Die Autohändler", "Overhaulin", "Bares für Rares",
+    "Trödel", "Container", "Cash or Trash", "Undercover Boss", "Antiques Roadshow",
+    "Border Control", "Border Security", "Border Force", "Border Patrol", "Airport Security",
+    "Au coeur des douanes", "Traffic Cops", "Caught On Dashcam", "Highway Thru Hell", "Trucking Hell",
+    "Ice Road Truckers", "Ice Pilots", "Deadliest Catch", "Gold Rush", "Goldrausch", "Gold Fever",
+    "Opal Hunters", "Moonshiners", "Diesel Brothers", "Knochenjobs", "Männer & Maschinen",
+    "24 Hours In Emergency", "A&E", "999:", "Ambulance", "Casualty 24/7", "Heli Retter", "NOTRUF",
+    "100 jours avec les secours", "Achtung Kontrolle", "Hartz und herzlich", "Goodbye Deutschland",
+    "Zwangsvollstrecker", "Alltagskämpfer", "Julia Leischik", "Room Tour", "Sepolti in casa",
+    "Help! We Bought", "A New Life in the Sun", "Our Farm Next Door", "The Cruise", "Holidaying with",
+    "Sex Dolls", "Clickbait", "Baby boom", "Little Big Italy", "Galileo", "Unwind with ITV",
+    "Appuntamento al cinema", "Tiere suchen ein Zuhause", "Elefant, Tiger", "Giraffe, Erdmännchen",
+    "Panda, Gorilla", "Seehund, Puma", "Nashorn, Zebra", "Leopard, Seebär", "Eisbär, Affe",
+    "Seelöwe & Co", "Bronx Zoo", "Une saison au zoo", "Il piatto forte", "Frittanza",
+    "Münzengalerie", "Nachtprogramm", "Schlemmerreisen", "Shopping", "Teleshopping"
+  ]
+  # Canali "di qualità": un documentario in prima serata qui finisce nel "Clou"
+  quality_channels: [Arte, ArteFr, 3sat, ZDF-Info, PHOENIX, ARD-alpha, ORF2, ORF3, ServusTvAustria,
+                     "Terra Mater Wild", SRF1, SRFi, RTS1, RTS2, RSILA1, RSILA2, Rai3, Rai5, RaiStoria,
+                     Focus, LA7, BBCFour, BBC2, PBSAmerica, Fr3, Fr5, TV5, TV5MondeFBS, "SPIEGEL TV Konflikt",
+                     BR, WDR, NDR, MDR, ARD, ZDF]
+
+films:
+  blocked_channels: []
+  blocked_title_keywords: ["Teleshopping"]
+  min_duration_minutes: 60
+
+# ---------------------------------------------------------------------
+#  "Il clou": i film/documentari più importanti
+# ---------------------------------------------------------------------
+clou:
+  film_min_rating: 7.0
+  film_min_votes: 25000
+  film_famous_votes: 200000      # film molto noti (tanti voti) entrano anche con voto >= film_famous_min_rating
+  film_famous_min_rating: 6.5
+  doc_min_rating: 7.5
+  max_items: 30
+
+# ---------------------------------------------------------------------
+#  DOPPIO AUDIO  (lista canali fornita dall'utente)
+#  Su questi canali il badge "DOPPIO AUDIO" compare SEMPRE, per film e
+#  documentari, indipendentemente dai flag del singolo programma.
+#  Ogni voce: nome mostrato + varianti del nome (Teleboy / La Vanguardia).
+#  Il confronto ignora maiuscole, spazi, punteggiatura e suffissi come
+#  "HD", "Deutsch", "TVE", "Suisse".
+# ---------------------------------------------------------------------
+dual_audio:
+  channels:
+    # Germania (solo pubbliche)
+    - [Das Erste, ARD, Das Erste HD, ARD Das Erste]
+    - [ZDF, ZDF HD]
+    - [Arte, arte Deutsch, ARTE HD, ArteFr, arte Français]
+    - [ZDFneo, ZDF neo]
+    - [ONE, ARD ONE, ARDONE, One HD]
+    - [3sat, 3sat HD]
+    # Francia
+    - [France 2, Fr2, France2]
+    - [France 3, Fr3, France3]
+    - [France 4, Fr4, France4]
+    - [TF1, TF1 HD]
+    - [M6, M6Suisse, M6 HD]
+    - [W9]
+    - [TMC]
+    - [TFX]
+    - [TF1 Séries Films, TF1SF, TF1 Series Films]
+    - [6ter]
+    # Austria
+    - [ORF 1, ORF1, ORF eins, ORF 1 HD]
+    - [ORF 2, ORF2, ORF 2 HD, ORF2 Europe, ORF2E]
+    - [ORF III, ORF3, ORF 3, ORF III HD]
+    # Spagna (La Vanguardia)
+    - [La 1, La 1 TVE, TVE La 1, La1]
+    - [La 2, La 2 TVE, TVE La 2, La2]
+    - [Antena 3, Antena3]
+    - [Cuatro]
+    - [Telecinco]
+    - [laSexta, La Sexta]
+    - [Neox]
+    - [FDF, FDF Telecinco, Factoría de Ficción]
+    - [Divinity]
+    - [Energy]
+    - [Paramount Network, Paramount]
+  # Mai badge su questi canali (private tedesche/austriache), qualunque cosa dicano i dati
+  never_channels: [RTL, RTLch, RTL2ch, RTLup, RTLNitro, ProSieben, Pro7ch, Pro7Maxx, "Sat.1", Sat.1ch,
+                   Sat.1Gold, ATV, "Puls 4", Puls4, Puls8]
+  # Mai badge per canali in queste lingue
+  never_languages: [en, it]
+  # Fonte secondaria: flag per-programma di Teleboy (is_dual_audio) sugli ALTRI canali
+  # tedeschi/francesi (es. SRF 1, SRF zwei, RTS, 3+). Il badge viene mostrato come
+  # "DOPPIO AUDIO (Teleboy)" solo se il programma è straniero (titolo originale diverso
+  # o paese di produzione estero): sui film tedeschi il "Zweikanalton" è spesso solo audiodescrizione.
+  use_teleboy_flag_on_other_channels: true
+  teleboy_flag_languages: [de, fr]
+
+# ---------------------------------------------------------------------
+#  Traduzione titoli in italiano
+# ---------------------------------------------------------------------
+translation:
+  wikidata: true                 # titolo italiano ufficiale via Wikidata (gratuito, senza chiave)
+  wikidata_max_searches_per_run: 250
+  machine_translation: true      # titoli documentari via MyMemory (gratuito, senza chiave, limite giornaliero)
+  machine_translation_max_chars_per_run: 1200   # MyMemory anonimo: ~5000 caratteri/giorno; la cache accumula
+  mymemory_email: ""             # facoltativo: con un'email il limite giornaliero sale a 50.000 caratteri
+
+# Spagna (La Vanguardia): la prima serata spagnola inizia più tardi
+prime_time_es:
+  from: "20:00"
+  to: "23:00"
+
+# ---------------------------------------------------------------------
+#  Argomenti dei documentari (Teleboy non li fornisce: classificazione
+#  per parole chiave in titolo/sottotitolo/descrizione, multilingue).
+#  Il primo argomento che corrisponde vince; altrimenti "Altro".
+# ---------------------------------------------------------------------
+doc_topics:
+  "Guerra e storia militare": [Krieg, Weltkrieg, Hitler, Nazi, Stalingrad, Wehrmacht, Barbarossa, guerre, guerra, war, WWII, Schlachtfeld, Battle, Bombe, Atombombe, Holocaust, militare, Militär, Panzer, Bundeswehr, NATO, Royal Navy]
+  "Storia": [Geschichte, Histoire, Storia, History, Antike, antichità, Mittelalter, Römer, Roman, Egypt, Ägypt, egizi, Pompeji, Pompei, Wikinger, Viking, Azteken, Dynastie, Kaiser, Imperien, Empire, Pharao, faraon, Medioevo, Rinascimento, retro, Chronik, 1492, Napoleon, Passato e Presente, Italiani con, Concorde, Titanic, Diktatur, RAF, Stasi, DDR]
+  "Natura e animali": [Tier, Tiere, Wildnis, Natur, nature, wild, wildlife, animali, animaux, Löwe, Lion, leoni, Bär, Bären, ours, orsi, Eisbär, Ozean, Ocean, Meer, mer, mare, Wald, forêt, foresta, Vögel, oiseaux, uccelli, Kranich, grue, Hunde, Katzen, gatti, cani, Terra Mater, Universum, Planet Earth, Blue Planet, predatori, Raubkatze, Seen, lacs, Fluss, river, Gärten, jardins]
+  "Spazio e scienza": [Weltall, Weltraum, Space, spazio, espace, Universe, Universo, Galaxie, Asteroid, Planet, Astronaut, Wissenschaft, science, scienza, Forschung, Physik, Evolution, Darwin, Erfindung, Geniale, Technik, Technologie, tech, KI, AI, intelligenza artificiale, Klima, climat, clima, Vulkan, volcan, Erde]
+  "Viaggi e paesi": [Reise, Reisen, voyage, viaggio, viaggi, travel, Journey, Journeys, unterwegs, Alpen, Alpes, Alpi, Insel, Inseln, île, isola, isole, Island, Islands, Stadt Land, Länder, Bergwelten, Himalaya, Kanada, Canada, Japan, Japon, Giappone, Afrika, Africa, Amerika, America, Indien, Inde, India, Cornwall, Railway, Eisenbahn, treno, trains, Route 66, Borghi, Escapades, Échappées, 360°]
+  "Arte, cultura e musica": [Kunst, art, arte, Kultur, culture, cultura, Musik, music, musique, musica, Rock, Jazz, Oper, opéra, opera, Maler, painter, peintre, pittore, Leonardo, Botticelli, Film, cinema, Kino, Hollywood, Literatur, libro, Buch, Architektur, Schloss, Burg, château, castello, Abbaye]
+  "Società e attualità": [Gesellschaft, société, società, Politik, politique, politica, Wahl, élection, Wirtschaft, economia, économie, Geld, argent, soldi, Gesundheit, santé, salute, Medizin, médecine, Ernährung, Familie, famille, famiglia, Frauen, femmes, donne, Social Media, TikTok, Migration, immigration, Armut, Arbeit, lavoro, Report, Reportage, Dok, inchiesta, Panorama, Zembla, Investigates]
+  "Crimine e misteri": [Mord, Mörder, meurtre, omicidio, Killer, Crime, crimine, Verbrechen, Kriminal, Prison, Gefängnis, Mafia, Täter, mystère, Mystery, mistero, misteri, Rätsel, enigmi, Geheim, secret, segreto]

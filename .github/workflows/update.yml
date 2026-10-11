@@ -15,7 +15,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 75
     steps:
       - uses: actions/checkout@v4
 
@@ -24,25 +24,33 @@ jobs:
           python-version: "3.12"
           cache: pip
 
-      - name: Installa dipendenze
-        run: pip install -r requirements.txt
+      - name: Installa dipendenze (torch solo CPU)
+        run: |
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+          pip install -r requirements.txt
+
+      - name: Cache modelli di traduzione (Hugging Face)
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: hf-opus-mt-de-fr-es-v1
 
       - name: Genera la pagina
         env:
           TZ: Europe/Zurich
-          # facoltativo: se teleboy.ch blocca la lettura della pagina dal server di GitHub,
-          # la chiave pubblica del frontend può essere salvata come secret del repository
-          TELEBOY_API_KEY: ${{ secrets.TELEBOY_API_KEY }}
+          HF_HUB_DISABLE_TELEMETRY: "1"
+          TOKENIZERS_PARALLELISM: "false"
         run: python build.py
 
       - name: Salva il risultato (docs/ + cache traduzioni)
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs cache/wikidata_imdb.json cache/wikidata_search.json cache/mymemory.json
+          git add docs cache/translations.json cache/wikidata_it.json
           if git diff --cached --quiet; then
             echo "Nessuna modifica"
           else
             git commit -m "Aggiornamento guida TV $(date -u +'%Y-%m-%d %H:%M') UTC"
+            git pull --rebase -X theirs || true
             git push
           fi
