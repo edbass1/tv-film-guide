@@ -2,7 +2,7 @@
 "use strict";
 var G = window.GUIDE;
 var KINDS = [["films","FILM"],["docs","DOCUMENTARI"]];
-var VIEWS = [["prime","Prima serata"],["clou","Il clou"],["genre","Per genere"],["rating","Per voto"],["all","Tutti per orario"]];
+var VIEWS = [["prime","Prima serata"],["genre","Per genere"],["rating","Per voto"],["all","Tutti per orario"]];
 var CC = {DE:"Germania",AT:"Austria",CH:"Svizzera",FR:"Francia",IT:"Italia",UK:"Regno Unito",ES:"Spagna"};
 var FROM = {de:"dal tedesco",fr:"dal francese",es:"dallo spagnolo",en:"dall'inglese"};
 var COUNTRIES = [["IT","Canali italiani"],["CH","Canali svizzeri"],["DE","Canali tedeschi"],["AT","Canali austriaci"],["FR","Canali francesi"],["UK","Canali inglesi"],["ES","Canali spagnoli"]];
@@ -24,6 +24,7 @@ var st = {day:0, kind:"films", view:"prime", genre:null};
 try { Object.assign(st, JSON.parse(sessionStorage.getItem("tvst2")||"{}")); } catch(e){}
 location.hash.replace(/^#/,"").split("&").forEach(function(kv){ var p=kv.split("="); if(p[0]==="day") st.day=parseInt(p[1],10)||0; else if(p[0]==="kind"||p[0]==="view") st[p[0]]=p[1]; });
 if (!/^(films|docs)$/.test(st.kind)) st.kind="films";
+if (!/^(prime|genre|rating|all)$/.test(st.view)) st.view="prime";
 var fs = parseInt(localStorage.getItem("tvfs")||"0",10);
 function applyFs(){ document.documentElement.style.setProperty("--fs", (22+fs*3)+"px"); }
 applyFs();
@@ -55,7 +56,7 @@ function btns(el, list, cur, onpick){
 function card(i){
   var now = Date.now(), past = new Date(i.e).getTime() < now;
   var title = i.it || i.t;
-  var h = '<article class="card'+(i.clou?' clou':'')+(past?' past':'')+'">';
+  var h = '<article class="card'+(past?' past':'')+'">';
   h += '<div class="when"><span class="time">'+hhmm(i.b)+'</span><span class="chan">'+esc(i.ch)+'</span>';
   if (i.b.substr(0,10)!==DAYS[st.day].date) h += '<span class="date">'+dshort(i.b)+'</span>';
   if (past) h += '<span class="date">(finito)</span>';
@@ -74,7 +75,6 @@ function card(i){
   if (i.g) h += '<span class="b gen">'+esc(i.g)+'</span>';
   if (i.y) h += '<span class="b gen">'+i.y+'</span>';
   if (i.dur) h += '<span class="b gen">'+i.dur+' min</span>';
-  if (i.clou) h += '<span class="b clou">★ CLOU</span>';
   h += '<span class="b cc">'+esc(CC[i.cc]||i.cc)+'</span>';
   h += '</div>';
   if (i.d) h += '<p class="desc">'+esc(i.d)+(i.da?' <em class="mt">(traduzione automatica '+esc(FROM[i.dl||i.lang]||"")+')</em>':'')+'</p>';
@@ -128,9 +128,6 @@ function render(){
   if (st.view==="prime"){
     var p=items.filter(function(i){return i.prime;}).sort(byScore);
     h+='<h2 class="sec">Prima serata – '+esc(D.long)+'</h2><p class="hint">'+kname+' che iniziano tra le '+G.prime.from+' e le '+G.prime.to+' (Spagna fino alle '+G.prime_es.to+'). Prima i più importanti.</p>'+grid(p);
-  } else if (st.view==="clou"){
-    var c=items.filter(function(i){return i.clou;}).sort(function(a,b){return (b.score||0)-(a.score||0);});
-    h+='<h2 class="sec">Il clou – '+esc(D.long)+'</h2><p class="hint">'+(st.kind==="films"?'I film più importanti: voto IMDb alto con molti voti, o film molto conosciuti.':'I documentari più importanti: voto IMDb alto, o canali di qualità in prima serata.')+'</p>'+grid(c.slice(0,60));
   } else if (st.view==="genre"){
     var groups={};
     items.forEach(function(i){

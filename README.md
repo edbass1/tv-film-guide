@@ -8,8 +8,7 @@ Pagina: https://edbass1.github.io/tv-film-guide/
 
 ## Sezioni
 Due sezioni: **FILM** (inclusi i film dei canali spagnoli) e **DOCUMENTARI**. Per ogni giorno:
-* **Prima serata** (inizio 20:00–22:30; Spagna 20:00–23:00), prima i più importanti
-* **Il clou**: voto IMDb alto con molti voti, o film molto conosciuti
+* **Prima serata** (inizio 20:00–22:30; Spagna 20:00–23:00), prima i più importanti (voto IMDb, notorietà, canale)
 * **Per genere** (documentari: **per argomento**), con il gruppo **Classici** = film fino al 1985
 * **Per voto** IMDb
 * **Tutti per orario**
