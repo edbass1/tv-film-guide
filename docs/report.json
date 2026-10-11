@@ -1,10 +1,10 @@
 {
- "generato": "2026-10-11T13:43+02:00",
- "durata_secondi": 229,
+ "generato": "2026-10-11T14:18+02:00",
+ "durata_secondi": 232,
  "conteggi_per_giorno": [
   {
    "giorno": "2026-10-11",
-   "film": 157,
+   "film": 156,
    "documentari": 59,
    "film_spagna": 60,
    "film_prima_serata": 35,
@@ -12,15 +12,15 @@
   },
   {
    "giorno": "2026-10-12",
-   "film": 172,
+   "film": 165,
    "documentari": 56,
    "film_spagna": 85,
-   "film_prima_serata": 40,
+   "film_prima_serata": 38,
    "doc_prima_serata": 14
   },
   {
    "giorno": "2026-10-13",
-   "film": 123,
+   "film": 121,
    "documentari": 57,
    "film_spagna": 46,
    "film_prima_serata": 26,
@@ -28,8 +28,8 @@
   },
   {
    "giorno": "2026-10-14",
-   "film": 47,
-   "documentari": 44,
+   "film": 46,
+   "documentari": 43,
    "film_spagna": 0,
    "film_prima_serata": 11,
    "doc_prima_serata": 8
@@ -39,13 +39,15 @@
   "programmi": {
    "canale escluso (blocked_channels)": 0,
    "totale": 6566,
-   "tenuti film": 541,
+   "tenuti film": 526,
    "non film/doc": 4891,
    "doc troppo breve": 150,
    "bambini": 573,
-   "tenuti doc": 253,
+   "tenuti doc": 252,
+   "titolo escluso (blocked_title_keywords)": 5,
    "doc parola esclusa": 97,
    "doc categoria esclusa": 22,
+   "episodio serie poliziesca": 11,
    "doc natura/lifestyle (descrizione)": 25,
    "film troppo breve": 8,
    "erotici": 2,
@@ -54,19 +56,19 @@
   }
  },
  "copertura": {
-  "film_con_imdb": "430/499",
-  "film_epg_con_imdb": "265/308",
+  "film_con_imdb": "430/488",
+  "film_epg_con_imdb": "265/297",
   "film_spagna_con_imdb": "165/191",
-  "doc_con_imdb": "16/216",
-  "film_doppio_audio": "129/499",
-  "doc_doppio_audio": "138/216",
-  "film_titolo_it_ufficiale(non it)": "171/314",
-  "titoli_de_fr_es_in_italiano": "396/444",
-  "titoli_de_fr_es_traduzione_automatica": "242/444",
-  "descrizioni_de_fr_es_tradotte": "442/442"
+  "doc_con_imdb": "16/215",
+  "film_doppio_audio": "118/488",
+  "doc_doppio_audio": "137/215",
+  "film_titolo_it_ufficiale(non it)": "171/303",
+  "titoli_de_fr_es_in_italiano": "385/432",
+  "titoli_de_fr_es_traduzione_automatica": "231/432",
+  "descrizioni_de_fr_es_tradotte": "430/430"
  },
  "traduzioni": {
-  "nuove": 122,
+  "nuove": 0,
   "rimandate": 0,
   "errore": null,
   "in_cache": 774
