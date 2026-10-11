@@ -1,6 +1,6 @@
 {
- "generato": "2026-10-11T14:44+02:00",
- "durata_secondi": 231,
+ "generato": "2026-10-11T15:04+02:00",
+ "durata_secondi": 235,
  "conteggi_per_giorno": [
   {
    "giorno": "2026-10-11",
@@ -65,13 +65,14 @@
   "film_titolo_it_ufficiale(non it)": "228/430",
   "titoli_de_fr_es_in_italiano": "385/432",
   "titoli_de_fr_es_traduzione_automatica": "231/432",
-  "descrizioni_de_fr_es_tradotte": "430/430"
+  "descrizioni_non_italiane_tradotte": "619/619",
+  "descrizioni_uk_tradotte": "189/189"
  },
  "traduzioni": {
   "nuove": 0,
   "rimandate": 0,
   "errore": null,
-  "in_cache": 774
+  "in_cache": 968
  },
  "epg_ultimo_inizio": "2026-10-15T04:50:00+00:00"
 }
