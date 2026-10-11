@@ -856,7 +856,8 @@ def main():
             g.sort(key=lambda x: (not x["prime"], not x.get("dual"), x["begin"]))
             m = pack(g[0])
             if len(g) > 1:
-                m["also"] = [{"ch": x["ch"], "b": x["begin"].isoformat(), "dual": x.get("dual")} for x in
+                m["also"] = [{"ch": x["ch"], "cc": x["cc"], "b": x["begin"].isoformat(), "e": x["end"].isoformat(),
+                              "prime": x["prime"], "dual": x.get("dual")} for x in
                              sorted(g[1:], key=lambda x: x["begin"])]
             out.append(m)
         return sorted(out, key=lambda o: o["b"])

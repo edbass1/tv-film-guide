@@ -5,6 +5,21 @@ var KINDS = [["films","FILM"],["docs","DOCUMENTARI"]];
 var VIEWS = [["prime","Prima serata"],["clou","Il clou"],["genre","Per genere"],["rating","Per voto"],["all","Tutti per orario"]];
 var CC = {DE:"Germania",AT:"Austria",CH:"Svizzera",FR:"Francia",IT:"Italia",UK:"Regno Unito",ES:"Spagna"};
 var LANG = {de:"tedesco",fr:"francese",es:"spagnolo",en:"inglese",it:"italiano"};
+var COUNTRIES = [["IT","Canali italiani"],["CH","Canali svizzeri"],["DE","Canali tedeschi"],["AT","Canali austriaci"],["FR","Canali francesi"],["UK","Canali inglesi"],["ES","Canali spagnoli"]];
+var hidden = {};
+try { hidden = JSON.parse(localStorage.getItem("tvcc")||"{}")||{}; } catch(e){ hidden = {}; }
+function ccOn(cc){ return !hidden[cc]; }
+// un programma resta visibile se il suo canale (o una replica) è di un paese selezionato
+function visible(i){
+  if (ccOn(i.cc)) {
+    if (!i.also) return i;
+    var o = Object.assign({}, i); o.also = i.also.filter(function(a){ return ccOn(a.cc||i.cc); }); return o;
+  }
+  var alt = (i.also||[]).filter(function(a){ return a.cc && ccOn(a.cc); });
+  if (!alt.length) return null;
+  var o2 = Object.assign({}, i, {ch:alt[0].ch, cc:alt[0].cc, b:alt[0].b, e:alt[0].e||i.e, prime:alt[0].prime, dual:alt[0].dual, also:alt.slice(1)});
+  return o2;
+}
 var st = {day:0, kind:"films", view:"prime", genre:null};
 try { Object.assign(st, JSON.parse(sessionStorage.getItem("tvst2")||"{}")); } catch(e){}
 location.hash.replace(/^#/,"").split("&").forEach(function(kv){ var p=kv.split("="); if(p[0]==="day") st.day=parseInt(p[1],10)||0; else if(p[0]==="kind"||p[0]==="view") st[p[0]]=p[1]; });
@@ -74,12 +89,36 @@ function byScore(a,b){ return (b.clou-a.clou)||((b.score||0)-(a.score||0))||a.b.
 function render(){
   save();
   var D = DAYS[st.day];
+  var V = {};
+  ["films","docs"].forEach(function(k){ V[k] = D[k].map(visible).filter(Boolean); });
+  var cbox = document.getElementById("countries");
+  if (!cbox.dataset.done){
+    cbox.dataset.done = "1";
+    COUNTRIES.forEach(function(c){
+      var l = document.createElement("label"); l.className = "cc-opt";
+      l.innerHTML = '<input type="checkbox" value="'+c[0]+'"'+(ccOn(c[0])?' checked':'')+'> <span>'+c[1]+'</span> <b class="n"></b>';
+      l.querySelector("input").onchange = function(ev){
+        if (ev.target.checked) delete hidden[c[0]]; else hidden[c[0]] = 1;
+        localStorage.setItem("tvcc", JSON.stringify(hidden)); render();
+      };
+      cbox.appendChild(l);
+    });
+    var all = document.createElement("button"); all.type="button"; all.className="cc-all"; all.textContent="Tutti i paesi";
+    all.onclick = function(){ hidden = {}; localStorage.setItem("tvcc","{}"); Array.prototype.forEach.call(cbox.querySelectorAll("input"), function(x){x.checked=true;}); render(); };
+    cbox.appendChild(all);
+  }
+  Array.prototype.forEach.call(cbox.querySelectorAll("label.cc-opt"), function(l){
+    var cc = l.querySelector("input").value;
+    var n = D[st.kind].filter(function(i){ return i.cc===cc; }).length;
+    l.querySelector(".n").textContent = "("+n+")";
+    l.classList.toggle("off", !ccOn(cc));
+  });
   btns(document.getElementById("days"), DAYS.map(function(d,k){return [k, esc(d.label)+'<small>'+esc(d.long)+'</small>'];}), st.day, function(k){st.day=k;st.genre=null;render();});
-  btns(document.getElementById("kinds"), KINDS.map(function(k){return [k[0], k[1]+' ('+D[k[0]].length+')'];}), st.kind, function(k){st.kind=k;st.genre=null;render();});
+  btns(document.getElementById("kinds"), KINDS.map(function(k){return [k[0], k[1]+' ('+V[k[0]].length+')'];}), st.kind, function(k){st.kind=k;st.genre=null;render();});
   btns(document.getElementById("views"), VIEWS.map(function(v){return [v[0], (st.kind==="docs"&&v[0]==="genre")?"Per argomento":v[1]];}), st.view, function(v){st.view=v;st.genre=null;render();});
   var onlyDual=document.getElementById("onlyDual").checked, showPast=document.getElementById("showPast").checked;
   var now=Date.now();
-  var items = D[st.kind].filter(function(i){
+  var items = V[st.kind].filter(function(i){
     if (onlyDual && !i.dual) return false;
     if (!showPast && new Date(i.e).getTime() < now) return false;
     return true;

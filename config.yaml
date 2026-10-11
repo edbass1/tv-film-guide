@@ -13,6 +13,8 @@ prime_time_es: {from: "20:00", to: "23:00"}   # in Spagna la prima serata inizia
 
 epg_base: "https://epgshare01.online/epgshare01/epg_ripper_{file}.xml.gz"
 
+# Paese del canale (cc) = filtro "Canali ..." sulla pagina:
+#   DE tedeschi, AT austriaci, CH svizzeri, FR francesi, IT italiani, UK inglesi, ES spagnoli (La Vanguardia)
 # ---------------------------------------------------------------------
 #  Canali. Per ogni canale: nome mostrato, lingua, paese, fonti.
 #  "sources" = [file:id_canale, ...]: la PRIMA è la guida principale,
