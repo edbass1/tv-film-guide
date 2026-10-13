@@ -241,6 +241,21 @@ class DualAudio:
         self.map = {chan_key(str(a)): str(e[0]) for e in da.get("channels", []) for a in e}
         self.never = {chan_key(str(x)) for x in da.get("never_channels", [])}
         self.never_lang = lower_set(da.get("never_languages"))
+        ie = da.get("italian_english") or {}
+        self.it_en = {chan_key(str(a)) for e in ie.get("channels", []) for a in e}
+        self.en_cc = {str(x).upper() for x in ie.get("english_countries", [])}
+
+    def it_english(self, ch):
+        return chan_key(ch) in self.it_en
+
+    def english_origin(self, info):
+        """info = {"l": [lingue originali], "c": [paesi]} da Wikidata."""
+        if not info:
+            return False
+        langs, ccs = set(info.get("l") or []), set(info.get("c") or [])
+        if langs:
+            return "en" in langs and "it" not in langs
+        return bool(ccs & self.en_cc) and "IT" not in ccs
 
     def listed(self, ch):
         return chan_key(ch) in self.map
@@ -402,6 +417,33 @@ def wikidata_it(ids, cache):
                 cache[i] = found.get(i)
         except Exception as e:
             log("  wikidata:", e)
+        time.sleep(0.3)
+
+
+def wikidata_lang(ids, cache):
+    """lingua originale (P364, codice ISO) e paese d'origine (P495) per id IMDb."""
+    todo = sorted({i for i in ids if i and i not in cache})
+    ses = requests.Session(); ses.headers["User-Agent"] = BOT_UA
+    for k in range(0, len(todo), 80):
+        chunk = todo[k:k + 80]
+        q = ("SELECT ?imdb ?lc ?cc WHERE { VALUES ?imdb {%s} ?item wdt:P345 ?imdb. "
+             "OPTIONAL{?item wdt:P364 ?l. ?l wdt:P218 ?lc} OPTIONAL{?item wdt:P495 ?c. ?c wdt:P297 ?cc} }"
+             % " ".join(f'"{i}"' for i in chunk))
+        try:
+            r = ses.get("https://query.wikidata.org/sparql", params={"query": q},
+                        headers={"Accept": "application/sparql-results+json"}, timeout=60)
+            r.raise_for_status()
+            found = {}
+            for b in r.json()["results"]["bindings"]:
+                f = found.setdefault(b["imdb"]["value"], {"l": [], "c": []})
+                for key, src in (("l", "lc"), ("c", "cc")):
+                    v = b.get(src, {}).get("value")
+                    if v and v not in f[key]:
+                        f[key].append(v)
+            for i in chunk:
+                cache[i] = found.get(i) or {"l": [], "c": []}
+        except Exception as e:
+            log("  wikidata lingua:", e)
         time.sleep(0.3)
 
 
@@ -827,8 +869,14 @@ def main():
     c = cfg["clou"]
     topics = [(n, kw_regex(w)) for n, w in docs_cfg["topics"].items()]
     qual = lower_set(docs_cfg["quality_channels"])
+    wl = load_json(CACHE / "wikidata_lang.json", {})
+    it_en = [p for p in kept if p["kind"] == "film" and p.get("tid") and DA.it_english(p["ch"])]
+    wikidata_lang([p["tid"] for p in it_en], wl)
+    save_json(CACHE / "wikidata_lang.json", wl)
     for p in kept:
         p["dual"] = DA.decide(p["ch"], p["lang"])
+        if DA.it_english(p["ch"]):
+            p["dual"] = "sì" if (p["kind"] == "film" and p.get("tid") and DA.english_origin(wl.get(p["tid"]))) else None
         r, v = p.get("imdb") or 0, p.get("votes") or 0
         if p["kind"] == "film":
             if p["src"] == "lv" and not p["genres"]:

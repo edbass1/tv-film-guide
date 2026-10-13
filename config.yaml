@@ -163,6 +163,28 @@ dual_audio:
     - [Divinity]
     - [Energy]
     - [Paramount Network, Paramount]
+  # canali italiani: doppio audio SOLO per film in lingua originale inglese (lingua/paese da Wikidata)
+  italian_english:
+    channels:
+      - [Rai 1, Rai 1 HD, Rai1]
+      - [Rai 2, Rai 2 HD, Rai2]
+      - [Rai 3, Rai 3 HD, Rai3]
+      - [Rai 4, Rai 4 HD, Rai4]
+      - [Rai 5, Rai 5 HD, Rai5]
+      - [Rai Movie, Rai Movie HD, RaiMovie]
+      - [Rai Premium, Rai Premium HD, RaiPremium]
+      - [Canale 5, Canale 5 HD]
+      - [Italia 1, Italia 1 HD]
+      - [Rete 4, Rete 4 HD]
+      - [20 Mediaset, "20", Mediaset 20, 20 Mediaset HD]
+      - [Iris, Iris HD]
+      - [La 5, La5, La 5 HD]
+      - [Focus, Focus HD]
+      - [Top Crime, Top Crime HD]
+      - [Italia 2, Mediaset Italia 2, Italia 2 HD]
+      - [TV8, TV8 HD]
+      - [Cielo, Cielo HD]
+    english_countries: [US, GB, UK, CA, AU, IE, NZ]
   never_channels: [RTL, ProSieben, "Sat.1", ATV, "Puls 4"]
   never_languages: [en, it]
 
