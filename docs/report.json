@@ -1,6 +1,6 @@
 {
- "generato": "2026-10-13T14:37+02:00",
- "durata_secondi": 177,
+ "generato": "2026-10-13T15:17+02:00",
+ "durata_secondi": 185,
  "conteggi_per_giorno": [
   {
    "giorno": "2026-10-13",
@@ -60,7 +60,7 @@
   "film_epg_con_imdb": "288/338",
   "film_spagna_con_imdb": "58/71",
   "doc_con_imdb": "24/218",
-  "film_doppio_audio": "60/409",
+  "film_doppio_audio": "114/409",
   "doc_doppio_audio": "132/218",
   "film_titolo_it_ufficiale(non it)": "125/270",
   "titoli_de_fr_es_in_italiano": "251/283",
