@@ -254,7 +254,8 @@ class DualAudio:
             return False
         langs, ccs = set(info.get("l") or []), set(info.get("c") or [])
         if langs:
-            return "en" in langs and "it" not in langs
+            # più lingue (es. film francese con scene in inglese): serve anche un paese anglofono
+            return "en" in langs and "it" not in langs and (langs == {"en"} or bool(ccs & self.en_cc))
         return bool(ccs & self.en_cc) and "IT" not in ccs
 
     def listed(self, ch):
