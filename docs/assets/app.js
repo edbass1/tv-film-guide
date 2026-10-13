@@ -7,7 +7,8 @@ var CC = {DE:"Germania",AT:"Austria",CH:"Svizzera",FR:"Francia",IT:"Italia",UK:"
 var FROM = {de:"dal tedesco",fr:"dal francese",es:"dallo spagnolo",en:"dall'inglese"};
 var COUNTRIES = [["IT","Canali italiani"],["CH","Canali svizzeri"],["DE","Canali tedeschi"],["AT","Canali austriaci"],["FR","Canali francesi"],["UK","Canali inglesi"],["ES","Canali spagnoli"]];
 var hidden = {};
-try { hidden = JSON.parse(localStorage.getItem("tvcc")||"{}")||{}; } catch(e){ hidden = {}; }
+var DEFAULT_HIDDEN = {CH:1,DE:1,AT:1,FR:1,UK:1,ES:1}; // prima visita: solo canali italiani
+try { var savedCc = localStorage.getItem("tvcc"); hidden = savedCc===null ? Object.assign({}, DEFAULT_HIDDEN) : (JSON.parse(savedCc)||{}); } catch(e){ hidden = Object.assign({}, DEFAULT_HIDDEN); }
 function ccOn(cc){ return !hidden[cc]; }
 // un programma resta visibile se il suo canale (o una replica) è di un paese selezionato
 // un programma sparisce 2 ore dopo l'INIZIO (o prima, se è già finito)
