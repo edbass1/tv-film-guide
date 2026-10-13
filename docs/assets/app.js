@@ -136,8 +136,10 @@ function render(){
   btns(document.getElementById("views"), VIEWS.map(function(v){return [v[0], (st.kind==="docs"&&v[0]==="genre")?"Per argomento":v[1]];}), st.view, function(v){st.view=v;st.genre=null;render();});
   var onlyDual=document.getElementById("onlyDual").checked, showPast=document.getElementById("showPast").checked;
   var now=Date.now();
+  var q=norm(document.getElementById("q").value.trim());
   var items = V[st.kind].filter(function(i){
     if (onlyDual && !i.dual) return false;
+    if (q && norm([i.t,i.o,i.it,i.sub,i.d,i.ch,i.g].concat((i.also||[]).map(function(a){return a.ch;})).join(" ")).indexOf(q)<0) return false;
     return true;
   });
   var kname = st.kind==="docs"?"documentari":"film";
@@ -168,6 +170,8 @@ function render(){
   var m=document.getElementById("main"); m.innerHTML=h;
   Array.prototype.forEach.call(m.querySelectorAll(".genres button"), function(b){ b.onclick=function(){ st.genre=b.getAttribute("data-g"); render(); }; });
 }
+function norm(x){ return String(x||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
+document.getElementById("q").oninput=render;
 document.getElementById("onlyDual").onchange=render;
 document.getElementById("showPast").onchange=render;
 // ricontrolla ogni minuto senza ricaricare la pagina (mantiene la posizione di scorrimento)
