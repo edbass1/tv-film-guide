@@ -8,7 +8,6 @@
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
-<div class="qbox"><label for="q">Cerca</label><input type="search" id="q" placeholder="titolo, canale, genere…" autocomplete="off"></div>
 
 <header class="top">
   <h1>Film e Documentari in TV</h1>
@@ -24,6 +23,7 @@
 <nav class="views" id="views" aria-label="Scegli la vista"></nav>
 <fieldset class="countries" id="countries"><legend>Paesi dei canali</legend></fieldset>
 <div class="options">
+  <span class="qbox"><button type="button" id="qbtn" aria-expanded="false">&#128269; CERCA</button><span id="qwrap" hidden><input type="search" id="q" aria-label="Cerca" placeholder="titolo, canale, genere…" autocomplete="off"><button type="button" id="qx" aria-label="Cancella ricerca">&times;</button></span></span>
   <label><input type="checkbox" id="onlyDual" autocomplete="off"> Solo DOPPIO AUDIO</label>
   <label><input type="checkbox" id="showPast" autocomplete="off"> Mostra anche quelli già finiti (o iniziati da più di 2 ore)</label>
 </div>

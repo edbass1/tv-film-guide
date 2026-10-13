@@ -171,7 +171,14 @@ function render(){
   Array.prototype.forEach.call(m.querySelectorAll(".genres button"), function(b){ b.onclick=function(){ st.genre=b.getAttribute("data-g"); render(); }; });
 }
 function norm(x){ return String(x||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
-document.getElementById("q").oninput=render;
+(function(){
+  var q=document.getElementById("q"), btn=document.getElementById("qbtn"), wrap=document.getElementById("qwrap");
+  function show(v){ wrap.hidden=!v; btn.setAttribute("aria-expanded", v?"true":"false"); if(v) q.focus(); }
+  btn.onclick=function(){ if (wrap.hidden) show(true); else if (!q.value) show(false); else q.focus(); };
+  q.oninput=render;
+  q.onkeydown=function(e){ if (e.key==="Escape" && !q.value) show(false); };
+  document.getElementById("qx").onclick=function(){ q.value=""; render(); show(false); btn.focus(); };
+})();
 document.getElementById("onlyDual").onchange=render;
 document.getElementById("showPast").onchange=render;
 // ricontrolla ogni minuto senza ricaricare la pagina (mantiene la posizione di scorrimento)
