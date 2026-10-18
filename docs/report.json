@@ -1,18 +1,18 @@
 {
- "generato": "2026-10-17T20:37+02:00",
- "durata_secondi": 246,
+ "generato": "2026-10-18T02:49+02:00",
+ "durata_secondi": 374,
  "conteggi_per_giorno": [
   {
    "giorno": "2026-10-17",
-   "film": 208,
-   "documentari": 88,
-   "film_spagna": 45,
-   "film_prima_serata": 49,
+   "film": 175,
+   "documentari": 86,
+   "film_spagna": 14,
+   "film_prima_serata": 31,
    "doc_prima_serata": 9
   },
   {
    "giorno": "2026-10-18",
-   "film": 237,
+   "film": 238,
    "documentari": 72,
    "film_spagna": 68,
    "film_prima_serata": 42,
@@ -20,58 +20,58 @@
   },
   {
    "giorno": "2026-10-19",
-   "film": 165,
-   "documentari": 69,
+   "film": 177,
+   "documentari": 71,
    "film_spagna": 49,
    "film_prima_serata": 41,
-   "doc_prima_serata": 11
+   "doc_prima_serata": 12
   },
   {
    "giorno": "2026-10-20",
-   "film": 10,
-   "documentari": 44,
+   "film": 106,
+   "documentari": 60,
    "film_spagna": 1,
-   "film_prima_serata": 0,
-   "doc_prima_serata": 9
+   "film_prima_serata": 17,
+   "doc_prima_serata": 13
   }
  ],
  "filtri": {
   "programmi": {
    "canale escluso (blocked_channels)": 0,
-   "totale": 7085,
-   "tenuti doc": 319,
-   "bambini": 693,
-   "doc troppo breve": 146,
-   "non film/doc": 4944,
-   "tenuti film": 660,
+   "totale": 8294,
+   "tenuti doc": 340,
+   "bambini": 739,
+   "doc troppo breve": 148,
+   "non film/doc": 5933,
+   "tenuti film": 738,
    "titolo escluso (blocked_title_keywords)": 4,
-   "episodio serie poliziesca": 8,
-   "doc parola esclusa": 91,
-   "doc categoria esclusa": 21,
-   "doc natura/lifestyle (descrizione)": 26,
-   "film troppo breve": 160,
+   "episodio serie poliziesca": 7,
+   "doc parola esclusa": 101,
+   "doc categoria esclusa": 25,
+   "doc natura/lifestyle (descrizione)": 27,
+   "film troppo breve": 211,
    "erotici": 2,
-   "doc reality (IMDb)": 11
+   "doc reality (IMDb)": 19
   }
  },
  "copertura": {
-  "film_con_imdb": "550/620",
-  "film_epg_con_imdb": "400/457",
-  "film_spagna_con_imdb": "150/163",
-  "doc_con_imdb": "30/273",
-  "film_doppio_audio": "196/620",
-  "doc_doppio_audio": "181/273",
-  "film_titolo_it_ufficiale(non it)": "244/442",
-  "titoli_de_fr_es_in_italiano": "432/479",
-  "titoli_de_fr_es_traduzione_automatica": "275/479",
-  "descrizioni_non_italiane_tradotte": "689/689",
-  "descrizioni_uk_tradotte": "209/209"
+  "film_con_imdb": "617/696",
+  "film_epg_con_imdb": "497/564",
+  "film_spagna_con_imdb": "120/132",
+  "doc_con_imdb": "30/289",
+  "film_doppio_audio": "218/696",
+  "doc_doppio_audio": "181/289",
+  "film_titolo_it_ufficiale(non it)": "256/472",
+  "titoli_de_fr_es_in_italiano": "415/459",
+  "titoli_de_fr_es_traduzione_automatica": "270/459",
+  "descrizioni_non_italiane_tradotte": "734/734",
+  "descrizioni_uk_tradotte": "274/274"
  },
  "traduzioni": {
-  "nuove": 53,
+  "nuove": 67,
   "rimandate": 0,
   "errore": null,
-  "in_cache": 2660
+  "in_cache": 2727
  },
- "epg_ultimo_inizio": "2026-10-21T03:47:00+02:00"
+ "epg_ultimo_inizio": "2026-10-21T04:50:00+00:00"
 }
