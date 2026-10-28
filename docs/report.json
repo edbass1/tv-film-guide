@@ -1,12 +1,12 @@
 {
- "generato": "2026-10-28T07:57+01:00",
- "durata_secondi": 407,
+ "generato": "2026-10-28T13:59+01:00",
+ "durata_secondi": 228,
  "conteggi_per_giorno": [
   {
    "giorno": "2026-10-28",
-   "film": 156,
+   "film": 150,
    "documentari": 60,
-   "film_spagna": 42,
+   "film_spagna": 36,
    "film_prima_serata": 30,
    "doc_prima_serata": 11
   },
@@ -38,10 +38,10 @@
  "filtri": {
   "programmi": {
    "canale escluso (blocked_channels)": 0,
-   "totale": 6765,
+   "totale": 6759,
    "non film/doc": 4956,
    "episodio serie poliziesca": 4,
-   "tenuti film": 495,
+   "tenuti film": 489,
    "doc troppo breve": 157,
    "tenuti doc": 220,
    "doc categoria esclusa": 35,
@@ -55,20 +55,20 @@
   }
  },
  "copertura": {
-  "film_con_imdb": "395/467",
+  "film_con_imdb": "392/461",
   "film_epg_con_imdb": "310/360",
-  "film_spagna_con_imdb": "85/107",
+  "film_spagna_con_imdb": "82/101",
   "doc_con_imdb": "25/196",
-  "film_doppio_audio": "131/467",
+  "film_doppio_audio": "130/461",
   "doc_doppio_audio": "114/196",
-  "film_titolo_it_ufficiale(non it)": "182/337",
-  "titoli_de_fr_es_in_italiano": "297/328",
-  "titoli_de_fr_es_traduzione_automatica": "184/328",
-  "descrizioni_non_italiane_tradotte": "501/501",
+  "film_titolo_it_ufficiale(non it)": "182/331",
+  "titoli_de_fr_es_in_italiano": "292/322",
+  "titoli_de_fr_es_traduzione_automatica": "179/322",
+  "descrizioni_non_italiane_tradotte": "495/495",
   "descrizioni_uk_tradotte": "178/178"
  },
  "traduzioni": {
-  "nuove": 93,
+  "nuove": 0,
   "rimandate": 0,
   "errore": null,
   "in_cache": 4954
