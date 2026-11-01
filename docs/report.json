@@ -1,12 +1,12 @@
 {
- "generato": "2026-11-01T08:00+01:00",
- "durata_secondi": 458,
+ "generato": "2026-11-01T13:53+01:00",
+ "durata_secondi": 130,
  "conteggi_per_giorno": [
   {
    "giorno": "2026-11-01",
-   "film": 231,
+   "film": 225,
    "documentari": 94,
-   "film_spagna": 72,
+   "film_spagna": 66,
    "film_prima_serata": 38,
    "doc_prima_serata": 7
   },
@@ -38,12 +38,12 @@
  "filtri": {
   "programmi": {
    "canale escluso (blocked_channels)": 0,
-   "totale": 6594,
+   "totale": 6585,
    "tenuti doc": 268,
    "doc troppo breve": 132,
-   "bambini": 571,
+   "bambini": 568,
    "non film/doc": 4730,
-   "tenuti film": 605,
+   "tenuti film": 599,
    "episodio serie poliziesca": 7,
    "doc parola esclusa": 77,
    "doc natura/lifestyle (descrizione)": 28,
@@ -57,20 +57,20 @@
   }
  },
  "copertura": {
-  "film_con_imdb": "483/564",
+  "film_con_imdb": "478/558",
   "film_epg_con_imdb": "353/409",
-  "film_spagna_con_imdb": "130/155",
+  "film_spagna_con_imdb": "125/149",
   "doc_con_imdb": "32/230",
-  "film_doppio_audio": "171/564",
+  "film_doppio_audio": "171/558",
   "doc_doppio_audio": "143/230",
-  "film_titolo_it_ufficiale(non it)": "216/409",
-  "titoli_de_fr_es_in_italiano": "365/408",
-  "titoli_de_fr_es_traduzione_automatica": "233/408",
-  "descrizioni_non_italiane_tradotte": "607/607",
+  "film_titolo_it_ufficiale(non it)": "212/403",
+  "titoli_de_fr_es_in_italiano": "360/402",
+  "titoli_de_fr_es_traduzione_automatica": "232/402",
+  "descrizioni_non_italiane_tradotte": "601/601",
   "descrizioni_uk_tradotte": "204/204"
  },
  "traduzioni": {
-  "nuove": 50,
+  "nuove": 0,
   "rimandate": 0,
   "errore": null,
   "in_cache": 6005
