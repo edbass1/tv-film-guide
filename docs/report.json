@@ -1,78 +1,77 @@
 {
- "generato": "2026-11-05T02:08+01:00",
- "durata_secondi": 174,
+ "generato": "2026-11-05T08:22+01:00",
+ "durata_secondi": 288,
  "conteggi_per_giorno": [
   {
-   "giorno": "2026-11-04",
-   "film": 141,
-   "documentari": 74,
-   "film_spagna": 7,
-   "film_prima_serata": 21,
-   "doc_prima_serata": 17
-  },
-  {
    "giorno": "2026-11-05",
-   "film": 156,
-   "documentari": 78,
-   "film_spagna": 31,
-   "film_prima_serata": 27,
+   "film": 169,
+   "documentari": 79,
+   "film_spagna": 44,
+   "film_prima_serata": 31,
    "doc_prima_serata": 15
   },
   {
    "giorno": "2026-11-06",
-   "film": 160,
+   "film": 172,
    "documentari": 60,
-   "film_spagna": 29,
-   "film_prima_serata": 34,
+   "film_spagna": 41,
+   "film_prima_serata": 37,
    "doc_prima_serata": 2
   },
   {
    "giorno": "2026-11-07",
-   "film": 148,
-   "documentari": 70,
-   "film_spagna": 0,
-   "film_prima_serata": 28,
+   "film": 186,
+   "documentari": 78,
+   "film_spagna": 33,
+   "film_prima_serata": 37,
    "doc_prima_serata": 7
+  },
+  {
+   "giorno": "2026-11-08",
+   "film": 13,
+   "documentari": 18,
+   "film_spagna": 1,
+   "film_prima_serata": 3,
+   "doc_prima_serata": 3
   }
  ],
  "filtri": {
   "programmi": {
    "canale escluso (blocked_channels)": 0,
-   "totale": 8243,
-   "non film/doc": 6145,
-   "tenuti film": 639,
+   "totale": 6691,
+   "non film/doc": 4860,
    "episodio serie poliziesca": 6,
-   "bambini": 657,
-   "doc troppo breve": 133,
-   "doc natura/lifestyle (descrizione)": 35,
-   "tenuti doc": 321,
-   "doc parola esclusa": 86,
-   "doc categoria esclusa": 35,
-   "titolo escluso (blocked_title_keywords)": 2,
-   "film troppo breve": 153,
-   "erotici": 1,
-   "doc Mediaset (non Focus)": 2,
-   "doc reality (IMDb)": 28
+   "tenuti film": 572,
+   "bambini": 602,
+   "doc troppo breve": 127,
+   "doc natura/lifestyle (descrizione)": 24,
+   "tenuti doc": 265,
+   "doc parola esclusa": 66,
+   "doc categoria esclusa": 26,
+   "titolo escluso (blocked_title_keywords)": 1,
+   "film troppo breve": 120,
+   "doc Mediaset (non Focus)": 1,
+   "doc reality (IMDb)": 21
   }
  },
  "copertura": {
-  "film_con_imdb": "505/605",
-  "film_epg_con_imdb": "455/538",
-  "film_spagna_con_imdb": "50/67",
-  "doc_con_imdb": "36/282",
-  "film_doppio_audio": "176/605",
-  "doc_doppio_audio": "169/282",
-  "film_titolo_it_ufficiale(non it)": "193/395",
-  "titoli_de_fr_es_in_italiano": "323/359",
-  "titoli_de_fr_es_traduzione_automatica": "238/359",
-  "descrizioni_non_italiane_tradotte": "632/632",
-  "descrizioni_uk_tradotte": "282/282"
+  "film_con_imdb": "456/540",
+  "film_epg_con_imdb": "353/421",
+  "film_spagna_con_imdb": "103/119",
+  "doc_con_imdb": "28/235",
+  "film_doppio_audio": "165/540",
+  "doc_doppio_audio": "142/235",
+  "film_titolo_it_ufficiale(non it)": "197/381",
+  "titoli_de_fr_es_in_italiano": "348/384",
+  "titoli_de_fr_es_traduzione_automatica": "235/384",
+  "descrizioni_non_italiane_tradotte": "588/588",
+  "descrizioni_uk_tradotte": "205/205"
  },
  "traduzioni": {
-  "nuove": 49,
+  "nuove": 120,
   "rimandate": 0,
   "errore": null,
-  "in_cache": 6697
+  "in_cache": 6817
  },
- "epg_ultimo_inizio": "2026-11-08T04:25:00+00:00"
+ "epg_ultimo_inizio": "2026-11-09T04:47:00+01:00"
 }
