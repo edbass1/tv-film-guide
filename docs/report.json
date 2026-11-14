@@ -1,77 +1,78 @@
 {
- "generato": "2026-11-13T20:37+01:00",
- "durata_secondi": 349,
+ "generato": "2026-11-14T07:13+01:00",
+ "durata_secondi": 278,
  "conteggi_per_giorno": [
   {
-   "giorno": "2026-11-13",
-   "film": 170,
-   "documentari": 64,
-   "film_spagna": 41,
-   "film_prima_serata": 41,
-   "doc_prima_serata": 2
-  },
-  {
    "giorno": "2026-11-14",
-   "film": 233,
-   "documentari": 76,
-   "film_spagna": 58,
-   "film_prima_serata": 47,
+   "film": 262,
+   "documentari": 78,
+   "film_spagna": 87,
+   "film_prima_serata": 54,
    "doc_prima_serata": 10
   },
   {
    "giorno": "2026-11-15",
-   "film": 185,
-   "documentari": 72,
-   "film_spagna": 27,
-   "film_prima_serata": 33,
+   "film": 238,
+   "documentari": 76,
+   "film_spagna": 69,
+   "film_prima_serata": 42,
    "doc_prima_serata": 5
   },
   {
    "giorno": "2026-11-16",
-   "film": 14,
-   "documentari": 42,
-   "film_spagna": 2,
-   "film_prima_serata": 5,
-   "doc_prima_serata": 7
+   "film": 178,
+   "documentari": 67,
+   "film_spagna": 54,
+   "film_prima_serata": 34,
+   "doc_prima_serata": 8
+  },
+  {
+   "giorno": "2026-11-17",
+   "film": 10,
+   "documentari": 15,
+   "film_spagna": 3,
+   "film_prima_serata": 3,
+   "doc_prima_serata": 2
   }
  ],
  "filtri": {
   "programmi": {
    "canale escluso (blocked_channels)": 0,
-   "totale": 6931,
-   "non film/doc": 4875,
-   "doc natura/lifestyle (descrizione)": 26,
-   "episodio serie poliziesca": 11,
-   "titolo escluso (blocked_title_keywords)": 4,
-   "tenuti doc": 278,
+   "totale": 6664,
+   "tenuti doc": 262,
    "bambini": 665,
-   "doc troppo breve": 144,
-   "tenuti film": 647,
-   "doc parola esclusa": 72,
-   "doc categoria esclusa": 41,
-   "film troppo breve": 150,
-   "doc Mediaset (non Focus)": 3,
+   "doc troppo breve": 131,
+   "non film/doc": 4558,
+   "tenuti film": 730,
+   "titolo escluso (blocked_title_keywords)": 4,
+   "doc parola esclusa": 75,
+   "episodio serie poliziesca": 10,
+   "erotici": 1,
+   "doc categoria esclusa": 37,
+   "doc natura/lifestyle (descrizione)": 19,
+   "film troppo breve": 153,
+   "doc Mediaset (non Focus)": 4,
    "doc reality (IMDb)": 15
   }
  },
  "copertura": {
-  "film_con_imdb": "505/602",
-  "film_epg_con_imdb": "408/474",
-  "film_spagna_con_imdb": "97/128",
-  "doc_con_imdb": "29/254",
-  "film_doppio_audio": "210/602",
-  "doc_doppio_audio": "163/254",
-  "film_titolo_it_ufficiale(non it)": "214/431",
-  "titoli_de_fr_es_in_italiano": "397/446",
-  "titoli_de_fr_es_traduzione_automatica": "263/446",
-  "descrizioni_non_italiane_tradotte": "652/652",
-  "descrizioni_uk_tradotte": "210/210"
+  "film_con_imdb": "587/688",
+  "film_epg_con_imdb": "409/475",
+  "film_spagna_con_imdb": "178/213",
+  "doc_con_imdb": "29/236",
+  "film_doppio_audio": "211/688",
+  "doc_doppio_audio": "142/236",
+  "film_titolo_it_ufficiale(non it)": "266/503",
+  "titoli_de_fr_es_in_italiano": "453/504",
+  "titoli_de_fr_es_traduzione_automatica": "268/504",
+  "descrizioni_non_italiane_tradotte": "710/710",
+  "descrizioni_uk_tradotte": "209/209"
  },
  "traduzioni": {
-  "nuove": 42,
+  "nuove": 215,
   "rimandate": 0,
   "errore": null,
-  "in_cache": 8572
+  "in_cache": 8787
  },
- "epg_ultimo_inizio": "2026-11-17T04:46:00+01:00"
+ "epg_ultimo_inizio": "2026-11-18T04:47:00+01:00"
 }
