@@ -78,6 +78,7 @@ function card(i){
   if (tvDay(i.b)!==DAYS[st.day].date) h += '<span class="date">'+dshort(i.b)+'</span>';
   if (past) h += '<span class="date">(già iniziato da oltre 2 ore)</span>';
   h += '</div>';
+  if (i.poster) h += '<img class="poster" src="' + esc(i.poster) + '" alt="Locandina: ' + esc(title) + '" loading="lazy" referrerpolicy="no-referrer">';
   h += '<h3 class="title">'+(i.u?'<a href="'+esc(i.u)+'" target="_blank" rel="noopener">'+esc(title)+'</a>':esc(title));
   if (i.dual) h += ' <span class="b dual" title="Canale con doppio audio (lingua originale)">DOPPIO AUDIO</span>';
   h += '</h3>';
