@@ -448,6 +448,28 @@ def wikidata_lang(ids, cache):
         time.sleep(0.3)
 
 
+def wikidata_posters(ids):
+    """Locandine Wikimedia Commons per i film identificati da IMDb; nessuna API key."""
+    todo = sorted({i for i in ids if i})
+    found = {}
+    ses = requests.Session(); ses.headers["User-Agent"] = BOT_UA
+    for k in range(0, len(todo), 60):
+        chunk = todo[k:k + 60]
+        q = ("SELECT ?imdb ?image WHERE { VALUES ?imdb {%s} "
+             "?item wdt:P345 ?imdb; wdt:P18 ?image. }"
+             % " ".join(f'"{i}"' for i in chunk))
+        try:
+            r = ses.get("https://query.wikidata.org/sparql", params={"query": q},
+                        headers={"Accept": "application/sparql-results+json"}, timeout=60)
+            r.raise_for_status()
+            for b in r.json()["results"]["bindings"]:
+                found.setdefault(b["imdb"]["value"], b["image"]["value"])
+        except Exception as e:
+            log("  wikidata locandine:", e)
+        time.sleep(0.3)
+    return found
+
+
 # ------------------------------------------------------------------ traduzione automatica
 class Translator:
     """Traduzione offline con modelli Helsinki-NLP (opus-mt); cache in cache/translations.json."""
@@ -874,6 +896,10 @@ def main():
     it_en = [p for p in kept if p["kind"] == "film" and p.get("tid") and DA.it_english(p["ch"])]
     wikidata_lang([p["tid"] for p in it_en], wl)
     save_json(CACHE / "wikidata_lang.json", wl)
+    posters = wikidata_posters([p["tid"] for p in kept if p["kind"] == "film" and p.get("tid")])
+    for p in kept:
+        if p["kind"] == "film" and p.get("tid") in posters:
+            p["poster"] = posters[p["tid"]]
     for p in kept:
         p["dual"] = DA.decide(p["ch"], p["lang"])
         if DA.it_english(p["ch"]):
@@ -914,6 +940,8 @@ def main():
         o = {"t": p["title"], "ch": p["ch"], "cc": p["cc"], "lang": p["lang"], "b": p["begin"].isoformat(),
              "e": end.isoformat(), "dur": p["dur"], "g": p.get("genre"), "y": p.get("year"),
              "prime": p["prime"], "clou": p["clou"], "score": p["score"]}
+        if p.get("poster"):
+            o["poster"] = p["poster"]
         for k_src, k in (("it", "it"), ("it_src", "its"), ("orig", "o"), ("sub", "sub"), ("imdb", "r"), ("votes", "v"),
                          ("tid", "id"), ("lv", "lv"), ("dual", "dual"), ("desc", "d"), ("desc_auto", "da"), ("dlang", "dl"), ("url", "u")):
             if p.get(k_src) not in (None, "", [], False):
