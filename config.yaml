@@ -45,8 +45,6 @@ channels:
   - {name: "TFX",       lang: fr, cc: FR, sources: ["FR1:TFX.fr", "CH1:TFX.ch"]}
   - {name: "TF1 Séries Films", lang: fr, cc: FR, sources: ["FR1:TF1.Séries.Films.fr", "CH1:TF1.Séries.Films.ch"]}
   - {name: "6ter",      lang: fr, cc: FR, sources: ["FR1:6ter.fr", "CH1:6ter.ch"]}
-  - {name: "RTS 1",     lang: fr, cc: CH, sources: ["FR1:RTS.1.fr", "CH1:RTS.1.ch"]}
-  - {name: "RTS 2",     lang: fr, cc: CH, sources: ["FR1:RTS.2.fr", "CH1:RTS.2.ch"]}
   # --- Italia / Svizzera italiana
   - {name: "Rai 1",     lang: it, cc: IT, sources: ["IT1:Rai.1.HD..101.it", "CH1:Rai.1.ch", "IT1:Rai1.it"]}
   - {name: "Rai 2",     lang: it, cc: IT, sources: ["IT1:Rai.2.HD..102.it", "IT1:Rai2.it", "CH1:Rai.2.ch"]}
