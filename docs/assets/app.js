@@ -75,7 +75,7 @@ function card(i){
   var title = i.it || i.t;
   var italianAir = i.cc === "IT" || /RSI LA ?[12]/i.test(i.ch||"") ||
     (i.also||[]).some(function(a){ return a.cc === "IT" || /RSI LA ?[12]/i.test(a.ch||""); });
-  var poster = st.kind === "films" && italianAir && /^tt\\d+$/.test(i.id||"")
+  var poster = st.kind === "films" && italianAir && /^tt\d+$/.test(i.id||"")
     ? "https://images.metahub.space/poster/medium/"+i.id+"/img" : "";
   var h = '<article class="card'+(past?' past':'')+(poster?' has-poster':'')+'">';
   h += '<div class="when"><span class="time">'+hhmm(i.b)+'</span><span class="chan">'+esc(i.ch)+'</span>';
