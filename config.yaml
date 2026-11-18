@@ -63,7 +63,7 @@ channels:
   - {name: "Cine34",    lang: it, cc: IT, sources: ["IT1:Cine34.it", "CH1:Cine34.ch"]}
   - {name: "Focus",     lang: it, cc: IT, sources: ["IT1:Focus.it", "CH1:Focus.ch"]}
   - {name: "LA7",       lang: it, cc: IT, sources: ["IT1:LA7.HD.it"]}
-  - {name: "LA7 Cinema", lang: it, cc: IT, sources: ["IT1:LA7.CINEMA.it", "IT1:LA7D.it"]}
+  - {name: "LA7 Cinema", lang: it, cc: IT, sources: ["IT1:LA7.CINEMA.it"]}
   - {name: "TV8",       lang: it, cc: IT, sources: ["IT1:TV8.HD.it", "CH1:TV8.ch"]}
   - {name: "Nove",      lang: it, cc: IT, sources: ["CH1:NOVE.ch", "IT1:Nove.it"]}
   - {name: "Cielo",     lang: it, cc: IT, sources: ["IT1:cielo.it", "CH1:Cielo.ch"]}
