@@ -73,12 +73,17 @@ function btns(el, list, cur, onpick){
 function card(i){
   var past = !!i._gone;
   var title = i.it || i.t;
-  var h = '<article class="card'+(past?' past':'')+'">';
+  var italianAir = i.cc === "IT" || /RSI LA ?[12]/i.test(i.ch||"") ||
+    (i.also||[]).some(function(a){ return a.cc === "IT" || /RSI LA ?[12]/i.test(a.ch||""); });
+  var poster = st.kind === "films" && italianAir && /^tt\\d+$/.test(i.id||"")
+    ? "https://images.metahub.space/poster/medium/"+i.id+"/img" : "";
+  var h = '<article class="card'+(past?' past':'')+(poster?' has-poster':'')+'">';
   h += '<div class="when"><span class="time">'+hhmm(i.b)+'</span><span class="chan">'+esc(i.ch)+'</span>';
   if (tvDay(i.b)!==DAYS[st.day].date) h += '<span class="date">'+dshort(i.b)+'</span>';
   if (past) h += '<span class="date">(già iniziato da oltre 2 ore)</span>';
   h += '</div>';
-  if (i.poster) h += '<img class="poster" src="' + esc(i.poster) + '" alt="Locandina: ' + esc(title) + '" loading="lazy" referrerpolicy="no-referrer">';
+  if (poster) h += '<img class="poster" src="'+poster+'" alt="Locandina: '+esc(title)+'" loading="lazy" onerror="this.remove();this.closest(\'.card\').classList.remove(\'has-poster\')">';
+  h += poster ? '<div class="cbody">' : '';
   h += '<h3 class="title">'+(i.u?'<a href="'+esc(i.u)+'" target="_blank" rel="noopener">'+esc(title)+'</a>':esc(title));
   if (i.dual) h += ' <span class="b dual" title="Canale con doppio audio (lingua originale)">DOPPIO AUDIO</span>';
   h += '</h3>';
@@ -95,8 +100,9 @@ function card(i){
   if (i.dur) h += '<span class="b gen">'+i.dur+' min</span>';
   h += '<span class="b cc">'+esc(CC[i.cc]||i.cc)+'</span>';
   h += '</div>';
-  if (i.d) h += '<p class="desc">'+esc(i.d)+(i.da?' <em class="mt">(traduzione automatica '+esc(FROM[i.dl||i.lang]||"")+')</em>':'')+'</p>';
+  if (i.d) h += '<p class="desc">'+esc(i.d)+(i.da?' <em class="mt">(traduzione automatica '+esc(FROM[i.dl||i.lang]||"") +')</em>':'')+'</p>';
   if (i.also && i.also.length) h += '<p class="also">Anche: '+i.also.map(function(a){return esc(a.ch)+' '+dshort(a.b)+' '+hhmm(a.b)+(a.dual?' (doppio audio)':'');}).join(" · ")+'</p>';
+  if (poster) h += '</div>';
   return h + '</article>';
 }
 function grid(list){
