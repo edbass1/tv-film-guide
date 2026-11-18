@@ -78,6 +78,9 @@ em.mt{color:#9fd3ff;font-style:italic;font-size:.85em}
 .options .qbox input#q{width:14rem;max-width:60vw;min-width:0;height:auto;font-size:1rem;padding:.3rem .5rem;border-radius:5px;border:1px solid #888;background:#fff;color:#000;accent-color:auto}
 #qx{padding:.2rem .6rem;border-radius:5px;border:1px solid #888;background:#222;color:#fff;cursor:pointer}
 
-/* Locandina del film: inserita nella scheda esistente senza cambiare la griglia. */
-.card:has(.poster){position:relative;padding-right:7.2rem;min-height:9rem}
-.poster{position:absolute;right:1rem;top:1rem;width:5.2rem;height:7.4rem;object-fit:cover;border-radius:5px;border:1px solid #555}
+/* Locandine verticali in stile catalogo-streaming, solo nella scheda dei film idonei. */
+.card.has-poster{display:grid;grid-template-columns:100px minmax(0,1fr);gap:.7rem 1rem;align-items:start}
+.card.has-poster .when{grid-column:1/-1}
+.card.has-poster .poster{display:block;width:100px;aspect-ratio:2/3;height:auto;object-fit:cover;border-radius:6px}
+.card.has-poster .cbody{min-width:0;display:flex;flex-direction:column;gap:.35rem}
+@media(max-width:520px){.card.has-poster{grid-template-columns:82px minmax(0,1fr)}.card.has-poster .poster{width:82px}}
