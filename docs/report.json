@@ -1,12 +1,12 @@
 {
- "generato": "2026-11-21T07:59+01:00",
- "durata_secondi": 469,
+ "generato": "2026-11-21T20:09+01:00",
+ "durata_secondi": 174,
  "conteggi_per_giorno": [
   {
    "giorno": "2026-11-21",
-   "film": 242,
+   "film": 208,
    "documentari": 68,
-   "film_spagna": 83,
+   "film_spagna": 49,
    "film_prima_serata": 54,
    "doc_prima_serata": 9
   },
@@ -28,51 +28,51 @@
   },
   {
    "giorno": "2026-11-24",
-   "film": 6,
-   "documentari": 23,
+   "film": 16,
+   "documentari": 42,
    "film_spagna": 1,
-   "film_prima_serata": 2,
-   "doc_prima_serata": 6
+   "film_prima_serata": 6,
+   "doc_prima_serata": 11
   }
  ],
  "filtri": {
   "programmi": {
    "canale escluso (blocked_channels)": 0,
-   "totale": 6284,
-   "tenuti doc": 271,
-   "bambini": 638,
-   "doc troppo breve": 132,
-   "non film/doc": 4262,
-   "tenuti film": 693,
-   "doc parola esclusa": 75,
+   "totale": 6612,
+   "tenuti doc": 293,
+   "bambini": 640,
+   "doc troppo breve": 146,
+   "non film/doc": 4564,
+   "tenuti film": 671,
+   "doc parola esclusa": 84,
    "titolo escluso (blocked_title_keywords)": 3,
-   "doc natura/lifestyle (descrizione)": 23,
-   "doc categoria esclusa": 17,
-   "film troppo breve": 150,
-   "episodio serie poliziesca": 5,
+   "doc natura/lifestyle (descrizione)": 25,
+   "doc categoria esclusa": 20,
+   "film troppo breve": 144,
+   "episodio serie poliziesca": 7,
    "doc Mediaset (non Focus)": 3,
    "erotici": 1,
    "doc reality (IMDb)": 11
   }
  },
  "copertura": {
-  "film_con_imdb": "569/657",
-  "film_epg_con_imdb": "387/447",
-  "film_spagna_con_imdb": "182/210",
-  "doc_con_imdb": "26/243",
-  "film_doppio_audio": "218/657",
-  "doc_doppio_audio": "157/243",
-  "film_titolo_it_ufficiale(non it)": "263/495",
-  "titoli_de_fr_es_in_italiano": "447/505",
-  "titoli_de_fr_es_traduzione_automatica": "272/505",
-  "descrizioni_non_italiane_tradotte": "714/714",
-  "descrizioni_uk_tradotte": "209/209"
+  "film_con_imdb": "547/633",
+  "film_epg_con_imdb": "394/457",
+  "film_spagna_con_imdb": "153/176",
+  "doc_con_imdb": "27/262",
+  "film_doppio_audio": "221/633",
+  "doc_doppio_audio": "175/262",
+  "film_titolo_it_ufficiale(non it)": "243/471",
+  "titoli_de_fr_es_in_italiano": "444/499",
+  "titoli_de_fr_es_traduzione_automatica": "289/499",
+  "descrizioni_non_italiane_tradotte": "709/709",
+  "descrizioni_uk_tradotte": "210/210"
  },
  "traduzioni": {
-  "nuove": 225,
+  "nuove": 44,
   "rimandate": 0,
   "errore": null,
-  "in_cache": 10151
+  "in_cache": 10195
  },
  "epg_ultimo_inizio": "2026-11-25T04:47:00+01:00"
 }
